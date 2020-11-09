@@ -5,7 +5,7 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 
 import firebase from "firebase/app";
-import firebaseConfig from "./utils/config";
+import { firebaseConfig } from "./utils/config";
 
 firebase.initializeApp(firebaseConfig);
 

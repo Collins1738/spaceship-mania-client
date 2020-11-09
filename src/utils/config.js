@@ -1,4 +1,4 @@
-export default {
+export const firebaseConfig = {
 	apiKey: "AIzaSyDcvWx-kqGRKCSwt3bbdmvMRufps3OYitc",
 	authDomain: "space-maniaa.firebaseapp.com",
 	databaseURL: "https://space-maniaa.firebaseio.com",
