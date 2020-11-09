@@ -23,7 +23,6 @@ class App extends Component {
 
 	render() {
 		const { loading, username } = this.state;
-		console.log(firebase.auth().currentUser);
 		// TODO: Replace loading text with loader
 		return loading ? (
 			<div>Loading...</div>
