@@ -1,6 +1,6 @@
 import "./App.css";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import firebase from "firebase";
+import firebase from "firebase/app";
 import LoginPage from "./pages/login-page";
 import React, { Component } from "react";
 
@@ -12,14 +12,22 @@ import SinglePlayerPage from "./pages/single-player-page";
 class App extends Component {
 	constructor() {
 		super();
-		this.state = {};
+		this.state = {
+			username: "Anonymous",
+			loading: true,
+		};
 
 		this.handleSignIn = this.handleSignIn.bind(this);
 		this.handleSignOut = this.handleSignOut.bind(this);
 	}
 
 	render() {
-		return (
+		const { loading, username } = this.state;
+		console.log(firebase.auth().currentUser);
+		// TODO: Replace loading text with loader
+		return loading ? (
+			<div>Loading...</div>
+		) : (
 			<div className="App">
 				<div className="page">
 					<div className="navbar">
@@ -30,11 +38,7 @@ class App extends Component {
 						<button onClick={this.handleSignOut}>Sign Out</button>
 					</div>
 					<h2>Space Mania</h2>
-					<h1>
-						Hey{" "}
-						{firebase.auth().currentUser?.displayName ||
-							"Anonymous"}
-					</h1>
+					<h1>Hey {username}</h1>
 					<Router>
 						<Switch>
 							<Route component={LoginPage} exact path="/login" />
@@ -65,12 +69,22 @@ class App extends Component {
 		);
 	}
 
+	async componentDidMount() {
+		firebase.auth().onAuthStateChanged((user) => {
+			if (user) {
+				this.setState({ username: user.displayName });
+			}
+			this.setState({ loading: false });
+		});
+	}
+
 	handleSignIn() {
 		window.location.href = "/login";
 	}
 
 	handleSignOut() {
 		firebase.auth().signOut();
+		this.setState({ username: "Anonymous", loading: false });
 		window.location.href = "/mode-selection";
 	}
 
