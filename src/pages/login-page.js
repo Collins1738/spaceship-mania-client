@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import firebase from "firebase";
+import axios from "axios";
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 
 // Configure FirebaseUI.
@@ -36,6 +37,10 @@ export default class LoginPage extends Component {
 			.onAuthStateChanged((user) => {
 				if (user) {
 					this.props.history.push("/mode-selection");
+					axios.post("/initializeUser", {
+						userId: user.uid,
+						displayName: user.displayName,
+					});
 				}
 			});
 	}
