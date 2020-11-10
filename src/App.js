@@ -1,5 +1,5 @@
 import "./App.css";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
 import firebase from "firebase/app";
 import LoginPage from "./pages/login-page";
 import React, { Component } from "react";
@@ -16,32 +16,31 @@ class App extends Component {
 	constructor() {
 		super();
 		this.state = {
-			username: "Anonymous",
-			loading: true,
+			username: null,
 		};
-
-		this.handleSignIn = this.handleSignIn.bind(this);
 		this.handleSignOut = this.handleSignOut.bind(this);
 	}
 
 	render() {
-		const { loading, username } = this.state;
-		// TODO: Replace loading text with loader
-		return loading ? (
-			<div>Loading...</div>
-		) : (
+		const { username } = this.state;
+		return (
 			<div className="App">
 				<div className="page">
-					<div className="navbar">
-						<button onClick={this.handleSignIn}>Sign In</button>
-						<button onClick={this.redirectChallenges}>
-							Mode Selection
-						</button>
-						<button onClick={this.handleSignOut}>Sign Out</button>
-					</div>
-					<h2>Space Mania</h2>
-					<h1>Hey {username}</h1>
 					<Router>
+						<div className="navbar">
+							<Link to="/login">
+								<button>Sign In</button>
+							</Link>
+							<Link to="/mode-selection">
+								<button>Mode Selection</button>
+							</Link>
+							<button onClick={this.handleSignOut}>
+								Sign Out
+							</button>
+						</div>
+						<h2>Space Mania</h2>
+						<h1>Hey {username || "Anonymous"}</h1>
+
 						<Switch>
 							<Route component={LoginPage} exact path="/login" />
 							<Route
@@ -73,24 +72,14 @@ class App extends Component {
 
 	async componentDidMount() {
 		firebase.auth().onAuthStateChanged((user) => {
-			if (user) {
+			if (user && user.displayName !== this.state.user) {
 				this.setState({ username: user.displayName });
 			}
-			this.setState({ loading: false });
 		});
-	}
-
-	handleSignIn() {
-		window.location.href = "/login";
 	}
 
 	handleSignOut() {
 		firebase.auth().signOut();
-		this.setState({ username: "Anonymous", loading: false });
-		window.location.href = "/mode-selection";
-	}
-
-	redirectChallenges() {
 		window.location.href = "/mode-selection";
 	}
 }

@@ -23,6 +23,7 @@ export default class LoginPage extends Component {
 		return (
 			<div>
 				<h2>Login Page</h2>
+				<div>Hiii I made a change</div>
 				<StyledFirebaseAuth
 					uiConfig={uiConfig}
 					firebaseAuth={firebase.auth()}
