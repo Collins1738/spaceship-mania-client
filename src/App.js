@@ -3,11 +3,14 @@ import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
 import firebase from "firebase/app";
 import LoginPage from "./pages/login-page";
 import React, { Component } from "react";
-
+import axios from "axios";
 // Pages
 import ChallengesPage from "./pages/challenges-page";
 import ModeSelectionPage from "./pages/mode-selection-page";
 import SinglePlayerPage from "./pages/single-player-page";
+
+axios.defaults.baseURL =
+	"https://us-central1-space-maniaa.cloudfunctions.net/api";
 
 class App extends Component {
 	constructor() {
