@@ -36,7 +36,7 @@ class SinglePlayerPage extends Component {
 		super(props);
 
 		this.state = {
-			size: 5,
+			size: 4,
 			numOfShips: 3,
 			positions: [],
 			triesLeft: 10,
