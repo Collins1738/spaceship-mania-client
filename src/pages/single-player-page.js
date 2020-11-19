@@ -15,6 +15,20 @@ const styles = (theme) => ({
 		textAlign: "center",
 		color: theme.palette.text.secondary,
 	},
+	unselectedButton: {
+		boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)",
+		//background: "0 3px 5px 2px rgba (0, 0, 0)",
+		background: "black",
+		height: 100,
+		width: "100%",
+	},
+	selectedButton: {
+		boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)",
+		//background: "0 3px 5px 2px rgba (0, 0, 0)",
+		background: "white",
+		height: 100,
+		width: "100%",
+	},
 });
 
 class SinglePlayerPage extends Component {
@@ -22,7 +36,7 @@ class SinglePlayerPage extends Component {
 		super(props);
 
 		this.state = {
-			size: 4,
+			size: 5,
 			numOfShips: 3,
 			positions: [],
 			triesLeft: 10,
@@ -44,10 +58,14 @@ class SinglePlayerPage extends Component {
 			<div className={classes.root}>
 				Single Player
 				<div>{this.board()}</div>
-				<Button id="Submit" onClick={this.handleSubmit}>
-					Submit
+				<Button 
+				>
+					
+				<Button variant="contained" color="secondary" id="Submit" onClick={this.handleSubmit}>
+  				Submit
 				</Button>
-				<Button id="Reset" onClick={this.handleReset}>
+				</Button>
+				<Button variant="contained" color="primary" id="Reset" onClick={this.handleReset}>
 					Reset
 				</Button>
 				<Typography>Tries left: {triesLeft}</Typography>
@@ -69,39 +87,60 @@ class SinglePlayerPage extends Component {
 			rows.push(this.row(i));
 			i += 1;
 		}
-		return <Grid container>{rows}</Grid>;
+		return <Grid container>{rows}
+		
+		</Grid>;
 	};
 
 	row = (rowNumber) => {
 		const { size, positions } = this.state;
+		const { classes } = this.props;
 		var row = [];
 		var i = 0;
 		while (i < size) {
 			var id = String(rowNumber) + String(i);
 			row.push(
-				<Grid item xs={12 / size} key={id}>
+				<Grid item xs={1} key={id} 
+			
+				
+			   >
 					<Button
 						id={id}
-						variant={
-							positions.includes(id) ? "outlined" : "contained"
-						}
+						
+						className={positions.includes(id) ? classes.selectedButton :classes.unselectedButton}
 						onClick={this.handleClick}
+						size = 'small'
+						color='black'
+						
 					>
-						<Typography id={id}>Hiii</Typography>
+						
 					</Button>
+					
 				</Grid>
 			);
 			i += 1;
 		}
 		return (
-			<Grid key={rowNumber} container>
+			<Grid
+				key={rowNumber}
+				className={classes.row}
+				style={{ width: "100%" }}
+				
+				container
+				direction="row"
+  				justify="center"
+				alignItems="center"
+				item
+				
+				xs={12}
+			>
 				{row}
 			</Grid>
 		);
 	};
 
 	handleClick = (event) => {
-		const { id } = event.target;
+		const { id } = event.currentTarget;
 		const { positions } = this.state;
 		var newPositions = positions;
 		if (positions.includes(id)) {
