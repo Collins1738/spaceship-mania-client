@@ -15,6 +15,11 @@ const styles = (theme) => ({
 		textAlign: "center",
 		color: theme.palette.text.secondary,
 	},
+	button: {
+		boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)",
+		height: 100,
+		width: "100%",
+	},
 });
 
 class SinglePlayerPage extends Component {
@@ -74,17 +79,19 @@ class SinglePlayerPage extends Component {
 
 	row = (rowNumber) => {
 		const { size, positions } = this.state;
+		const { classes } = this.props;
 		var row = [];
 		var i = 0;
 		while (i < size) {
 			var id = String(rowNumber) + String(i);
 			row.push(
-				<Grid item xs={12 / size} key={id}>
+				<Grid item xs={Math.floor(12 / size)} key={id}>
 					<Button
 						id={id}
 						variant={
 							positions.includes(id) ? "outlined" : "contained"
 						}
+						className={classes.button}
 						onClick={this.handleClick}
 					>
 						<Typography id={id}>Hiii</Typography>
@@ -94,14 +101,21 @@ class SinglePlayerPage extends Component {
 			i += 1;
 		}
 		return (
-			<Grid key={rowNumber} container>
+			<Grid
+				key={rowNumber}
+				className={classes.row}
+				style={{ width: "100%" }}
+				container
+				item
+				xs={12}
+			>
 				{row}
 			</Grid>
 		);
 	};
 
 	handleClick = (event) => {
-		const { id } = event.target;
+		const { id } = event.currentTarget;
 		const { positions } = this.state;
 		var newPositions = positions;
 		if (positions.includes(id)) {
