@@ -17,17 +17,15 @@ const styles = (theme) => ({
 	},
 	unselectedButton: {
 		boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)",
-		//background: "0 3px 5px 2px rgba (0, 0, 0)",
 		background: "black",
-		height: 100,
-		width: "100%",
+		height: 80,
+		width: 80,
 	},
 	selectedButton: {
 		boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)",
-		//background: "0 3px 5px 2px rgba (0, 0, 0)",
 		background: "white",
-		height: 100,
-		width: "100%",
+		height: 80,
+		width: 80,
 	},
 });
 
@@ -36,8 +34,8 @@ class SinglePlayerPage extends Component {
 		super(props);
 
 		this.state = {
-			size: 4,
-			numOfShips: 3,
+			size: 7, // 2 - 7
+			numShips: 3,
 			positions: [],
 			triesLeft: 10,
 			gameId: "BmJqiqUgRIg2i7xKl5Gr",
@@ -53,21 +51,38 @@ class SinglePlayerPage extends Component {
 
 	render() {
 		const { classes } = this.props;
-		const { triesLeft, score, comment, gameWon } = this.state;
+		const {
+			triesLeft,
+			score,
+			comment,
+			gameWon,
+			numShips,
+			positions,
+		} = this.state;
 		return (
 			<div className={classes.root}>
 				Single Player
-				<div>{this.board()}</div>
-				<Button 
-				>
-					
-				<Button variant="contained" color="secondary" id="Submit" onClick={this.handleSubmit}>
-  				Submit
-				</Button>
-				</Button>
-				<Button variant="contained" color="primary" id="Reset" onClick={this.handleReset}>
-					Reset
-				</Button>
+				<div style={{ margin: "20px" }}>{this.board()}</div>
+				<Typography>Pick {numShips} ship locations</Typography>
+				<div style={{ margin: "20px" }}>
+					<Button
+						variant="contained"
+						color="secondary"
+						id="Submit"
+						onClick={this.handleSubmit}
+						disabled={positions.length !== numShips}
+					>
+						Submit
+					</Button>
+					<Button
+						variant="contained"
+						color="primary"
+						id="Reset"
+						onClick={this.handleReset}
+					>
+						Reset
+					</Button>
+				</div>
 				<Typography>Tries left: {triesLeft}</Typography>
 				<Typography>Score: {score}</Typography>
 				<Typography>{comment}</Typography>
@@ -87,9 +102,7 @@ class SinglePlayerPage extends Component {
 			rows.push(this.row(i));
 			i += 1;
 		}
-		return <Grid container>{rows}
-		
-		</Grid>;
+		return <Grid container>{rows}</Grid>;
 	};
 
 	row = (rowNumber) => {
@@ -100,22 +113,17 @@ class SinglePlayerPage extends Component {
 		while (i < size) {
 			var id = String(rowNumber) + String(i);
 			row.push(
-				<Grid item xs={1} key={id} 
-			
-				
-			   >
+				<Grid item key={id}>
 					<Button
 						id={id}
-						
-						className={positions.includes(id) ? classes.selectedButton :classes.unselectedButton}
+						className={
+							positions.includes(id)
+								? classes.selectedButton
+								: classes.unselectedButton
+						}
 						onClick={this.handleClick}
-						size = 'small'
-						color='black'
-						
-					>
-						
-					</Button>
-					
+						size="small"
+					></Button>
 				</Grid>
 			);
 			i += 1;
@@ -124,14 +132,11 @@ class SinglePlayerPage extends Component {
 			<Grid
 				key={rowNumber}
 				className={classes.row}
-				style={{ width: "100%" }}
-				
+				style={{}}
 				container
 				direction="row"
-  				justify="center"
-				alignItems="center"
+				justify="center"
 				item
-				
 				xs={12}
 			>
 				{row}
@@ -141,12 +146,15 @@ class SinglePlayerPage extends Component {
 
 	handleClick = (event) => {
 		const { id } = event.currentTarget;
-		const { positions } = this.state;
+		const { positions, numShips } = this.state;
 		var newPositions = positions;
 		if (positions.includes(id)) {
 			newPositions.splice(positions.indexOf(id), 1);
 			this.setState({ positions: newPositions });
 		} else {
+			if (positions.length === numShips) {
+				return;
+			}
 			newPositions.push(id);
 			this.setState({ positions: newPositions });
 		}
