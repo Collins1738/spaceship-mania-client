@@ -1,0 +1,57 @@
+{
+	"requests": [
+		{
+			"requestName": "/hi",
+			"requestType": "Get",
+			"params": null,
+			"response": { "message": "some message" },
+			"description": "This is just a test request I use to make sure everything is okay and working"
+		},
+		{
+			"requestName": "/initializeUser",
+			"requestType": "Post",
+			"params": {
+				"userId": "some user id",
+				"displayName": "some displayName"
+			},
+			"response": { "message": "Successfully initialized user" },
+			"description": "This is used to initialize a user. You don't need to worry much about this"
+		},
+		{
+			"requestName": "/makeSinglePlayerGame",
+			"requestType": "Post",
+			"params": {
+				"size": "someNumber",
+				"numShips": "someNumber",
+				"userId": "some userid"
+			},
+			"response": {
+				"gameId": "gameId",
+				"size": "someNumber",
+				"numShips": "someNumber",
+				"triesLeft": "someNumber"
+			},
+			"description": "This basically makes a new game in the database and returns the gameId for that game. When a user starts a game this should be called and the gameId should be kept as it would be used to make all other requests used in playing the game"
+		},
+		{
+			"requestName": "/getNumberCorrectPositions",
+			"requestType": "Post",
+			"params": {
+				"gameId": "some gameId",
+				"answers": [
+					{ "x": 1, "y": 3 },
+					{ "x": 5, "y": 2 }
+				]
+			},
+			"response": {
+				"numCorrect": "number of answers that were correct",
+				"numShips": "number of ships in the original game//you probably won't need this",
+				"triesLeft": "the amount of tries left for the game",
+				"gameOver": "boolean, true is game is over and false if game is not",
+				"gameWon": "boolean, true is game is won and false if game is not won yet or lost",
+				"positions": "null if game not over, but shows correct positions if form,-[{x: 1, y: 2}, {x: 3, y: 1}] if game is over",
+				"score": "score, a number"
+			}
+		}
+	]
+}
