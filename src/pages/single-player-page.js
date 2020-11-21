@@ -2,9 +2,12 @@ import React, { Component } from "react";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import { withStyles } from "@material-ui/core/styles";
+import { ThemeProvider, withStyles } from "@material-ui/core/styles";
 
 import axios from "axios";
+import { green } from "@material-ui/core/colors";
+
+
 
 const styles = (theme) => ({
 	root: {
@@ -13,12 +16,14 @@ const styles = (theme) => ({
 	paper: {
 		padding: theme.spacing(2),
 		textAlign: "center",
-		color: theme.palette.text.secondary,
+		color: "black",
 	},
 	button: {
+		
 		boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)",
 		height: 100,
 		width: "100%",
+		inherit: "black"
 	},
 });
 
@@ -49,10 +54,10 @@ class SinglePlayerPage extends Component {
 			<div className={classes.root}>
 				Single Player
 				<div>{this.board()}</div>
-				<Button id="Submit" onClick={this.handleSubmit}>
+				<Button id="Submit" onClick={this.handleSubmit} variant="contained" color="secondary">
 					Submit
 				</Button>
-				<Button id="Reset" onClick={this.handleReset}>
+				<Button id="Reset" onClick={this.handleReset} variant="contained" color="primary">
 					Reset
 				</Button>
 				<Typography>Tries left: {triesLeft}</Typography>
@@ -85,17 +90,23 @@ class SinglePlayerPage extends Component {
 		while (i < size) {
 			var id = String(rowNumber) + String(i);
 			row.push(
-				<Grid item xs={Math.floor(12 / size)} key={id}>
-					<Button
-						id={id}
-						variant={
-							positions.includes(id) ? "outlined" : "contained"
-						}
-						className={classes.button}
-						onClick={this.handleClick}
-					>
-						<Typography id={id}>Hiii</Typography>
-					</Button>
+				<Grid item xs={Math.floor(5 / size)} key={id} >
+					
+						<Button
+							id={id}
+							variant={
+								positions.includes(id) ? "outlined" : "contained"
+							}
+							className={classes.button}
+							onClick={this.handleClick}
+							size='small'
+							color="inherit"
+						>
+						</Button>
+					
+					
+						
+					
 				</Grid>
 			);
 			i += 1;
@@ -108,6 +119,7 @@ class SinglePlayerPage extends Component {
 				container
 				item
 				xs={12}
+				alignContent='center'
 			>
 				{row}
 			</Grid>
