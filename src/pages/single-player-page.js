@@ -13,7 +13,7 @@ const styles = (theme) => ({
 	paper: {
 		padding: theme.spacing(2),
 		textAlign: "center",
-		color: theme.palette.text.secondary,
+		color: "black",
 	},
 	unselectedButton: {
 		boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)",
@@ -138,6 +138,7 @@ class SinglePlayerPage extends Component {
 				justify="center"
 				item
 				xs={12}
+				alignContent="center"
 			>
 				{row}
 			</Grid>
