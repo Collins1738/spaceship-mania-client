@@ -4,6 +4,9 @@ import firebase from "firebase/app";
 import LoginPage from "./pages/login-page";
 import React, { Component } from "react";
 import axios from "axios";
+import { createMuiTheme, withStyles, makeStyles, ThemeProvider } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+import { green, purple } from '@material-ui/core/colors';
 // Pages
 import ChallengesPage from "./pages/challenges-page";
 import ModeSelectionPage from "./pages/mode-selection-page";
@@ -27,8 +30,8 @@ class App extends Component {
 			<div className="App">
 				<div className="page">
 					<Router>
-						<div className="navbar">
-							<Link to="/login">
+						<div className="navbar" >
+							<Link to="/login"  >
 								<button>Sign In</button>
 							</Link>
 							<Link to="/mode-selection">
