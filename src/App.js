@@ -8,26 +8,20 @@ import axios from "axios";
 import ChallengesPage from "./pages/challenges-page";
 import ModeSelectionPage from "./pages/mode-selection-page";
 import SinglePlayerPage from "./pages/single-player-page";
-import {
-	createMuiTheme,
-	withStyles,
-	makeStyles,
-	ThemeProvider,
-} from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import ChallengePage from "./pages/challenge-page";
 
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
-import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 axios.defaults.baseURL =
 	"https://us-central1-space-maniaa.cloudfunctions.net/api";
 
-const theme = createMuiTheme({
+/*const theme = createMuiTheme({
 	palette: {
 		primary: {
 			light: "#757ce8",
@@ -42,7 +36,7 @@ const theme = createMuiTheme({
 			contrastText: "#000",
 		},
 	},
-});
+});*/
 const useStyles = makeStyles((theme) => ({
 	root: {
 		flexGrow: 1,
@@ -55,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-class App extends Component {
+class AppInner extends Component {
 	constructor() {
 		super();
 		this.state = {
@@ -160,7 +154,7 @@ class App extends Component {
 		window.location.href = "/mode-selection";
 	}
 }
-export default () => {
+const App = () => {
 	const classes = useStyles();
 	const [anchorEl, setAnchorEl] = React.useState(null);
 	const handleClick = (event) => {
@@ -170,5 +164,13 @@ export default () => {
 	const handleClose = () => {
 		setAnchorEl(null);
 	};
-	return <App classes={classes} />;
+	return (
+		<AppInner
+			classes={classes}
+			handleClick={handleClick}
+			handleClose={handleClose}
+			anchorEl={anchorEl}
+		/>
+	);
 };
+export default App;

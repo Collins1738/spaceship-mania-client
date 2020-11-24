@@ -2,12 +2,9 @@ import React, { Component } from "react";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import { ThemeProvider, withStyles } from "@material-ui/core/styles";
+import { withStyles } from "@material-ui/core/styles";
 
 import axios from "axios";
-import { green } from "@material-ui/core/colors";
-
-
 
 const styles = (theme) => ({
 	root: {
@@ -141,7 +138,7 @@ class SinglePlayerPage extends Component {
 				justify="center"
 				item
 				xs={12}
-				alignContent='center'
+				alignContent="center"
 			>
 				{row}
 			</Grid>
