@@ -8,6 +8,7 @@ import axios from "axios";
 import ChallengesPage from "./pages/challenges-page";
 import ModeSelectionPage from "./pages/mode-selection-page";
 import SinglePlayerPage from "./pages/single-player-page";
+import ChallengePage from "./pages/challenge-page";
 
 axios.defaults.baseURL =
 	"https://us-central1-space-maniaa.cloudfunctions.net/api";
@@ -17,6 +18,7 @@ class App extends Component {
 		super();
 		this.state = {
 			username: null,
+			userId: null,
 		};
 		this.handleSignOut = this.handleSignOut.bind(this);
 	}
@@ -54,6 +56,14 @@ class App extends Component {
 								path="/challenges"
 							/>
 							<Route
+								component={ChallengePage}
+								exact
+								path="/challenge/:challengeId"
+								render={() => (
+									<ChallengePage userId={this.state.userId} />
+								)}
+							/>
+							<Route
 								component={SinglePlayerPage}
 								exact
 								path="/single-player"
@@ -72,8 +82,8 @@ class App extends Component {
 
 	async componentDidMount() {
 		firebase.auth().onAuthStateChanged((user) => {
-			if (user && user.displayName !== this.state.user) {
-				this.setState({ username: user.displayName });
+			if (user && user.uid !== this.state.userId) {
+				this.setState({ username: user.displayName, userId: user.uid });
 			}
 		});
 	}
