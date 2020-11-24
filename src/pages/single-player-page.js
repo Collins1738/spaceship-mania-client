@@ -8,7 +8,7 @@ import axios from "axios";
 
 const styles = (theme) => ({
 	root: {
-		flexGrow: 1gi,
+		flexGrow: 1,
 	},
 	paper: {
 		padding: theme.spacing(2),
