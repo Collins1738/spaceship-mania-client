@@ -12,7 +12,14 @@ export default class ChallengesPage extends Component {
 	render() {
 		return (
 			<div>
-				Challenges
+				<h3>Challenges</h3>
+				<button
+					onClick={() => {
+						this.props.history.push("/challenge-creation");
+					}}
+				>
+					Make A Challenge
+				</button>
 				{this.challengesList()}
 			</div>
 		);
