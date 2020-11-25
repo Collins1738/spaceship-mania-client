@@ -8,9 +8,10 @@ import axios from "axios";
 import ChallengesPage from "./pages/challenges-page";
 import ModeSelectionPage from "./pages/mode-selection-page";
 import SinglePlayerPage from "./pages/single-player-page";
-import { makeStyles } from "@material-ui/core/styles";
+import GameplayPage from "./pages/gameplay-page";
 import ChallengePage from "./pages/challenge-page";
 
+import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
@@ -93,15 +94,13 @@ class AppInner extends Component {
 												open={Boolean(anchorEl)}
 												onClose={handleClose}
 											>
-												<MenuItem onClick={handleClose}>
-													<Link to="/login"> Login </Link>
-												</MenuItem>
+												<MenuItem onClick={handleClose}>Profile</MenuItem>
 												<MenuItem onClick={handleClose}>My account</MenuItem>
 												<MenuItem onClick={handleClose}>Logout</MenuItem>
 											</Menu>
 										</div>
 										<Typography variant="h6" className={classes.title}>
-											<h2>Space ania</h2>
+											<h2>Space Mania</h2>
 										</Typography>
 										<Link to="/login">
 											<Button color="inherit">Login</Button>
@@ -129,12 +128,18 @@ class AppInner extends Component {
 							/>
 							<Route component={ChallengesPage} exact path="/challenges" />
 							<Route
-								component={ChallengePage}
-								exact
 								path="/challenge/:challengeId"
-								render={() => <ChallengePage userId={this.state.userId} />}
+								render={(props) => (
+									<ChallengePage userId={this.state.userId} {...props} />
+								)}
 							/>
 							<Route component={SinglePlayerPage} exact path="/single-player" />
+							<Route
+								path="/gameplay/:gameId"
+								render={(props) => (
+									<GameplayPage userId={this.state.userId} {...props} />
+								)}
+							/>
 							<Route component={ModeSelectionPage} exact path="/" />
 						</Switch>
 					</Router>

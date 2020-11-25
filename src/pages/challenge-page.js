@@ -15,6 +15,8 @@ export default class ChallengePage extends Component {
 			tries: 0,
 			userId: this.props.userId,
 		};
+
+		this.handlePlay = this.handlePlay.bind(this);
 	}
 
 	render() {
@@ -61,7 +63,16 @@ export default class ChallengePage extends Component {
 	};
 
 	handlePlay() {
-		// Make game
-		// redirect to /gameplay/:gameId
+		const { challengeId, userId } = this.state;
+		axios
+			.post("/makeChallengeGame", { challengeId, userId })
+			.then((response) => {
+				const { gameId } = response.data;
+				this.props.history.push(`/gameplay/${gameId}`);
+			})
+			.catch((err) => {
+				alert("something went wrong");
+				console.log(err.message);
+			});
 	}
 }
