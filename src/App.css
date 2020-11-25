@@ -1,7 +1,9 @@
 .App {
 	text-align: center;
-	background-color: blueviolet;
-	
+	/*background-color: blueviolet;*/
+	color: white;
+	font-family: monospace;
+	font-size: x-large;
 }
 
 .App-logo {
@@ -24,12 +26,12 @@ body {
 }
 
 .App-header {
-	background-color: blueviolet;
+	/*background-color: blueviolet;*/
 	min-height: 100vh;       
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
 	font-size: calc(10px + 2vmin);
-	color: blueviolet;
+	/*color: blueviolet;*/
 }
