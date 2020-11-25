@@ -10,7 +10,6 @@ export default class ChallengesPage extends Component {
 	}
 
 	render() {
-		console.log(this.state.challenges);
 		return (
 			<div>
 				Challenges
