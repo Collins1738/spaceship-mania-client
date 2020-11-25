@@ -8,9 +8,10 @@ import axios from "axios";
 import ChallengesPage from "./pages/challenges-page";
 import ModeSelectionPage from "./pages/mode-selection-page";
 import SinglePlayerPage from "./pages/single-player-page";
-import { makeStyles } from "@material-ui/core/styles";
+import GameplayPage from "./pages/gameplay-page";
 import ChallengePage from "./pages/challenge-page";
 
+import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
@@ -71,7 +72,10 @@ class AppInner extends Component {
 					<Router>
 						<div className="navbar">
 							<div className={classes.root}>
-								<AppBar position="static" style={{ backgroundColor: "black" }}>
+								<AppBar
+									position="static"
+									style={{ backgroundColor: "black" }}
+								>
 									<Toolbar>
 										<div>
 											<Button
@@ -93,16 +97,27 @@ class AppInner extends Component {
 												open={Boolean(anchorEl)}
 												onClose={handleClose}
 											>
-												<MenuItem onClick={handleClose}>Profile</MenuItem>
-												<MenuItem onClick={handleClose}>My account</MenuItem>
-												<MenuItem onClick={handleClose}>Logout</MenuItem>
+												<MenuItem onClick={handleClose}>
+													Profile
+												</MenuItem>
+												<MenuItem onClick={handleClose}>
+													My account
+												</MenuItem>
+												<MenuItem onClick={handleClose}>
+													Logout
+												</MenuItem>
 											</Menu>
 										</div>
-										<Typography variant="h6" className={classes.title}>
+										<Typography
+											variant="h6"
+											className={classes.title}
+										>
 											<h2>Space Mania</h2>
 										</Typography>
 										<Link to="/login">
-											<Button color="inherit">Login</Button>
+											<Button color="inherit">
+												Login
+											</Button>
 										</Link>
 									</Toolbar>
 								</AppBar>
@@ -113,7 +128,9 @@ class AppInner extends Component {
 							<Link to="/mode-selection">
 								<button>Mode Selection</button>
 							</Link>
-							<button onClick={this.handleSignOut}>Sign Out</button>
+							<button onClick={this.handleSignOut}>
+								Sign Out
+							</button>
 						</div>
 						<h2>Space Mania</h2>
 						<h1>Hey {username || "Anonymous"}</h1>
@@ -125,15 +142,37 @@ class AppInner extends Component {
 								exact
 								path="/mode-selection"
 							/>
-							<Route component={ChallengesPage} exact path="/challenges" />
+							<Route
+								component={ChallengesPage}
+								exact
+								path="/challenges"
+							/>
 							<Route
 								component={ChallengePage}
 								exact
 								path="/challenge/:challengeId"
-								render={() => <ChallengePage userId={this.state.userId} />}
+								render={() => (
+									<ChallengePage userId={this.state.userId} />
+								)}
 							/>
-							<Route component={SinglePlayerPage} exact path="/single-player" />
-							<Route component={ModeSelectionPage} exact path="/" />
+							<Route
+								component={SinglePlayerPage}
+								exact
+								path="/single-player"
+							/>
+							<Route
+								component={GameplayPage}
+								exact
+								path="/gameplay/:gameId"
+								render={() => (
+									<GameplayPage userId={this.state.userId} />
+								)}
+							/>
+							<Route
+								component={ModeSelectionPage}
+								exact
+								path="/"
+							/>
 						</Switch>
 					</Router>
 				</div>
