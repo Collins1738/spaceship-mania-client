@@ -8,9 +8,10 @@ import axios from "axios";
 import ChallengesPage from "./pages/challenges-page";
 import ModeSelectionPage from "./pages/mode-selection-page";
 import SinglePlayerPage from "./pages/single-player-page";
-import { makeStyles } from "@material-ui/core/styles";
+import GameplayPage from "./pages/gameplay-page";
 import ChallengePage from "./pages/challenge-page";
 
+import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
@@ -72,7 +73,10 @@ class AppInner extends Component {
 					<Router>
 						<div className="navbar">
 							<div className={classes.root}>
-								<AppBar position="static" style={{ backgroundColor: "black" }}>
+								<AppBar
+									position="static"
+									style={{ backgroundColor: "black" }}
+								>
 									<Toolbar>
 										<div>
 											<Button 
@@ -103,7 +107,10 @@ class AppInner extends Component {
 												
 											</Menu>
 										</div>
-										<Typography variant="h6" className={classes.title}>
+										<Typography
+											variant="h6"
+											className={classes.title}
+										>
 											<h2>Space Mania</h2>
 											<img src="assets/logo.jpg" alt="logo"></img>
 										</Typography>
@@ -120,7 +127,9 @@ class AppInner extends Component {
 							<Link to="/mode-selection">
 								<button>Mode Selection</button>
 							</Link>
-							<button onClick={this.handleSignOut}>Sign Out</button>
+							<button onClick={this.handleSignOut}>
+								Sign Out
+							</button>
 						</div>
 						<h2>Space Mania</h2>
 					
@@ -133,15 +142,39 @@ class AppInner extends Component {
 								exact
 								path="/mode-selection"
 							/>
-							<Route component={ChallengesPage} exact path="/challenges" />
 							<Route
-								component={ChallengePage}
+								component={ChallengesPage}
 								exact
-								path="/challenge/:challengeId"
-								render={() => <ChallengePage userId={this.state.userId} />}
+								path="/challenges"
 							/>
-							<Route component={SinglePlayerPage} exact path="/single-player" />
-							<Route component={ModeSelectionPage} exact path="/" />
+							<Route
+								path="/challenge/:challengeId"
+								render={(props) => (
+									<ChallengePage
+										userId={this.state.userId}
+										{...props}
+									/>
+								)}
+							/>
+							<Route
+								component={SinglePlayerPage}
+								exact
+								path="/single-player"
+							/>
+							<Route
+								path="/gameplay/:gameId"
+								render={(props) => (
+									<GameplayPage
+										userId={this.state.userId}
+										{...props}
+									/>
+								)}
+							/>
+							<Route
+								component={ModeSelectionPage}
+								exact
+								path="/"
+							/>
 						</Switch>
 					</Router>
 				</div>
