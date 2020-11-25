@@ -44,6 +44,7 @@ class GamplayPage extends Component {
 			gameOver: false,
 			gameWon: false,
 			correctPositions: [],
+			loading: true,
 		};
 
 		this.handleReset = this.handleReset.bind(this);
@@ -58,38 +59,50 @@ class GamplayPage extends Component {
 			gameWon,
 			numShips,
 			positions,
+			loading,
 		} = this.state;
 		return (
-			<div className={classes.root}>
-				Gameplay
-				<div style={{ margin: "20px" }}>{this.board()}</div>
-				<Typography>Pick {numShips} ship locations</Typography>
-				<div style={{ margin: "20px" }}>
-					<Button
-						variant="contained"
-						color="secondary"
-						id="Submit"
-						onClick={this.handleSubmit}
-						disabled={positions.length !== numShips}
-					>
-						Submit
-					</Button>
-					<Button
-						variant="contained"
-						color="primary"
-						id="Reset"
-						onClick={this.handleReset}
-					>
-						Reset
-					</Button>
-				</div>
-				<Typography>Tries left: {triesLeft}</Typography>
-				<Typography>Score: {score}</Typography>
-				<Typography>{comment}</Typography>
-				{gameWon ? <Typography>You won! </Typography> : <div></div>}
-				<Typography>
-					For testing purposes, the answers are (0, 0), (1, 0), (0, 3)
-				</Typography>
+			<div>
+				{loading ? (
+					<div>Loading... </div>
+				) : (
+					<div className={classes.root}>
+						Gameplay
+						<div style={{ margin: "20px" }}>{this.board()}</div>
+						<Typography>Pick {numShips} ship locations</Typography>
+						<div style={{ margin: "20px" }}>
+							<Button
+								variant="contained"
+								color="secondary"
+								id="Submit"
+								onClick={this.handleSubmit}
+								disabled={positions.length !== numShips}
+							>
+								Submit
+							</Button>
+							<Button
+								variant="contained"
+								color="primary"
+								id="Reset"
+								onClick={this.handleReset}
+							>
+								Reset
+							</Button>
+						</div>
+						<Typography>Tries left: {triesLeft}</Typography>
+						<Typography>Score: {score}</Typography>
+						<Typography>{comment}</Typography>
+						{gameWon ? (
+							<Typography>You won! </Typography>
+						) : (
+							<div></div>
+						)}
+						<Typography>
+							For testing purposes, the answers are (0, 0), (1,
+							0), (0, 3)
+						</Typography>
+					</div>
+				)}
 			</div>
 		);
 	}
@@ -145,6 +158,34 @@ class GamplayPage extends Component {
 		);
 	};
 
+	componentDidMount() {
+		const { gameId } = this.state;
+		axios
+			.post("/getGameInfo", { gameId })
+			.then((response) => {
+				if (response.status === 200) {
+					const { numShips, size, triesLeft, userId } = response.data;
+					if (userId !== this.state.userId && false) {
+						alert("Game can only be played by correct user");
+						this.props.history.push("/mode-selection");
+					} else {
+						this.setState({
+							numShips,
+							size,
+							triesLeft,
+							loading: false,
+						});
+					}
+				} else {
+					alert("Game does not exist");
+				}
+			})
+			.catch((error) => {
+				alert("Something went wrong");
+				console.log(error.message);
+			});
+	}
+
 	handleClick = (event) => {
 		const { id } = event.currentTarget;
 		const { positions, numShips } = this.state;
@@ -174,7 +215,6 @@ class GamplayPage extends Component {
 			})
 			.then((response) => {
 				if (response.status === 200) {
-					console.log(response.data);
 					const {
 						triesLeft,
 						numCorrect,

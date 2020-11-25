@@ -148,11 +148,12 @@ class AppInner extends Component {
 								path="/challenges"
 							/>
 							<Route
-								component={ChallengePage}
-								exact
 								path="/challenge/:challengeId"
-								render={() => (
-									<ChallengePage userId={this.state.userId} />
+								render={(props) => (
+									<ChallengePage
+										userId={this.state.userId}
+										{...props}
+									/>
 								)}
 							/>
 							<Route
@@ -161,11 +162,12 @@ class AppInner extends Component {
 								path="/single-player"
 							/>
 							<Route
-								component={GameplayPage}
-								exact
 								path="/gameplay/:gameId"
-								render={() => (
-									<GameplayPage userId={this.state.userId} />
+								render={(props) => (
+									<GameplayPage
+										userId={this.state.userId}
+										{...props}
+									/>
 								)}
 							/>
 							<Route
