@@ -12,13 +12,11 @@ export default class ModeSelectionPage extends Component {
 	render() {
 		return (
 			<div>
-				<h1>Select a mode</h1>
-				<button onClick={this.enterSinglePlayerMode}>
-					Single Player Mode
-				</button>
-				<button onClick={this.enterChallengeMode}>
-					Challenge Mode
-				</button>
+			
+				
+				
+				
+				
 			</div>
 		);
 	}

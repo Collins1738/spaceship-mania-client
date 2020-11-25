@@ -43,6 +43,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 	menuButton: {
 		marginRight: theme.spacing(2),
+		backgroundColor: "white",
 	},
 	title: {
 		flexGrow: 1,
@@ -74,7 +75,9 @@ class AppInner extends Component {
 								<AppBar position="static" style={{ backgroundColor: "black" }}>
 									<Toolbar>
 										<div>
-											<Button
+											<Button 
+												position="static"
+												style= {{backgroundColor:"white"}}
 												edge="start"
 												className={classes.menuButton}
 												color="inherit"
@@ -85,24 +88,28 @@ class AppInner extends Component {
 											>
 												
 											</Button>
-
+											
 											<Menu
 												id="simple-menu"
+												/*color= "white"*/
 												anchorEl={anchorEl}
 												keepMounted
 												open={Boolean(anchorEl)}
 												onClose={handleClose}
 											>
-												<MenuItem onClick={handleClose}>Profile</MenuItem>
-												<MenuItem onClick={handleClose}>My account</MenuItem>
-												<MenuItem onClick={handleClose}>Logout</MenuItem>
+												<MenuItem onClick={handleClose}><Link to="/single-player"> Single Player </Link></MenuItem> 
+												<MenuItem onClick={handleClose}><Link to="/challenges">Challenges </Link> </MenuItem> 
+												<MenuItem onClick={handleClose}>Logout </MenuItem>
+												
 											</Menu>
 										</div>
 										<Typography variant="h6" className={classes.title}>
 											<h2>Space Mania</h2>
+											<img src="assets/logo.jpg" alt="logo"></img>
 										</Typography>
+
 										<Link to="/login">
-											<Button color="inherit">Login</Button>
+											<Button color="primary">Login</Button>
 										</Link>
 									</Toolbar>
 								</AppBar>
@@ -116,8 +123,9 @@ class AppInner extends Component {
 							<button onClick={this.handleSignOut}>Sign Out</button>
 						</div>
 						<h2>Space Mania</h2>
+					
 						<h1>Hey {username || "Anonymous"}</h1>
-
+						
 						<Switch>
 							<Route component={LoginPage} exact path="/login" />
 							<Route
