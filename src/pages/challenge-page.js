@@ -35,14 +35,7 @@ export default class ChallengePage extends Component {
 	componentDidMount() {
 		const { challengeId } = this.state;
 		axios.post("/getChallenge", { challengeId }).then((response) => {
-			const {
-				highscores,
-				creator,
-				date,
-				name,
-				size,
-				tries,
-			} = response.data;
+			const { highscores, creator, date, name, size, tries } = response.data;
 			this.setState({
 				highscores,
 				creator,
@@ -64,11 +57,7 @@ export default class ChallengePage extends Component {
 				</div>
 			);
 		});
-		return highscoresRender[0] ? (
-			highscoresRender
-		) : (
-			<div>No highscores</div>
-		);
+		return highscoresRender[0] ? highscoresRender : <div>No highscores</div>;
 	};
 
 	handlePlay() {

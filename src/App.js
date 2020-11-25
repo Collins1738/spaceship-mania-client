@@ -93,13 +93,15 @@ class AppInner extends Component {
 												open={Boolean(anchorEl)}
 												onClose={handleClose}
 											>
-												<MenuItem onClick={handleClose}>Profile</MenuItem>
+												<MenuItem onClick={handleClose}>
+													<Link to="/login"> Login </Link>
+												</MenuItem>
 												<MenuItem onClick={handleClose}>My account</MenuItem>
 												<MenuItem onClick={handleClose}>Logout</MenuItem>
 											</Menu>
 										</div>
 										<Typography variant="h6" className={classes.title}>
-											<h2>Space Mania</h2>
+											<h2>Space ania</h2>
 										</Typography>
 										<Link to="/login">
 											<Button color="inherit">Login</Button>
