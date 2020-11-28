@@ -11,6 +11,7 @@ import SinglePlayerPage from "./pages/single-player-page";
 import GameplayPage from "./pages/gameplay-page";
 import ChallengePage from "./pages/challenge-page";
 import ChallengeCreationPage from "./pages/challenge-creation-page";
+import UserPage from "./pages/user-page";
 
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
@@ -129,6 +130,9 @@ class AppInner extends Component {
 							<Link to="/mode-selection">
 								<button>Mode Selection</button>
 							</Link>
+							<Link to="/user">
+								<button>Profile</button>
+							</Link>
 							<button onClick={this.handleSignOut}>
 								Sign Out
 							</button>
@@ -181,6 +185,15 @@ class AppInner extends Component {
 								)}
 							/>
 							<Route
+								path="/user"
+								render={(props) => (
+									<UserPage
+										userId={this.state.userId}
+										{...props}
+									/>
+								)}
+							/>
+							<Route
 								component={ModeSelectionPage}
 								exact
 								path="/"
@@ -195,7 +208,14 @@ class AppInner extends Component {
 	async componentDidMount() {
 		firebase.auth().onAuthStateChanged((user) => {
 			if (user && user.uid !== this.state.userId) {
-				this.setState({ username: user.displayName, userId: user.uid });
+				axios
+					.post("/getUserInfo", { userId: user.uid })
+					.then((response) => {
+						this.setState({
+							username: response.data.displayName,
+						});
+					});
+				this.setState({ userId: user.uid });
 			}
 		});
 	}
