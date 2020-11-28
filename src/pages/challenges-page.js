@@ -52,7 +52,14 @@ class ChallengesPage extends Component {
 	render() {
 		return (
 			<div>
-				<div style={{ margin: "20px" }}>Challenges</div>
+				<h3>Challenges</h3>
+				<button
+					onClick={() => {
+						this.props.history.push("/challenge-creation");
+					}}
+				>
+					Make A Challenge
+				</button>
 				<Grid container justify="center" spacing={2}>
 					{this.challengesList()}
 				</Grid>
