@@ -88,30 +88,17 @@ class AppInner extends Component {
 							<h1>Hey {username || "Anonymous"}</h1>
 
 							<Switch>
-								<Route
-									component={LoginPage}
-									exact
-									path="/login"
-								/>
+								<Route component={LoginPage} exact path="/login" />
 								<Route
 									exact
 									path="/mode-selection"
-									render={(props) => (
-										<ModeSelectionPage {...props} />
-									)}
+									render={(props) => <ModeSelectionPage {...props} />}
 								/>
-								<Route
-									component={ChallengesPage}
-									exact
-									path="/challenges"
-								/>
+								<Route component={ChallengesPage} exact path="/challenges" />
 								<Route
 									path="/challenge/:challengeId"
 									render={(props) => (
-										<ChallengePage
-											userId={this.state.userId}
-											{...props}
-										/>
+										<ChallengePage userId={this.state.userId} {...props} />
 									)}
 								/>
 								<Route
@@ -122,10 +109,7 @@ class AppInner extends Component {
 								<Route
 									path="/gameplay/:gameId"
 									render={(props) => (
-										<GameplayPage
-											userId={this.state.userId}
-											{...props}
-										/>
+										<GameplayPage userId={this.state.userId} {...props} />
 									)}
 								/>
 								<Route
@@ -140,18 +124,13 @@ class AppInner extends Component {
 								<Route
 									path="/user"
 									render={(props) => (
-										<UserPage
-											userId={this.state.userId}
-											{...props}
-										/>
+										<UserPage userId={this.state.userId} {...props} />
 									)}
 								/>
 								<Route
 									exact
 									path="/"
-									render={(props) => (
-										<ModeSelectionPage {...props} />
-									)}
+									render={(props) => <ModeSelectionPage {...props} />}
 								/>
 							</Switch>
 						</div>
@@ -164,13 +143,11 @@ class AppInner extends Component {
 	async componentDidMount() {
 		firebase.auth().onAuthStateChanged((user) => {
 			if (user && user.uid !== this.state.userId) {
-				axios
-					.post("/getUserInfo", { userId: user.uid })
-					.then((response) => {
-						this.setState({
-							username: response.data.displayName,
-						});
+				axios.post("/getUserInfo", { userId: user.uid }).then((response) => {
+					this.setState({
+						username: response.data.displayName,
 					});
+				});
 				this.setState({ userId: user.uid });
 			}
 		});
@@ -199,10 +176,7 @@ class AppInner extends Component {
 		return (
 			<div className="navbar">
 				<div className={classes.root}>
-					<AppBar
-						position="fixed"
-						style={{ backgroundColor: "black" }}
-					>
+					<AppBar position="fixed" style={{ backgroundColor: "black" }}>
 						<Toolbar>
 							<div>
 								<Button
@@ -244,12 +218,7 @@ class AppInner extends Component {
 							<Typography variant="h6" className={classes.title}>
 								<div style={{ padding: "30px" }}>
 									<Link to="/mode-selection">
-										<img
-											src={logo}
-											alt="logo"
-											width="100%"
-											height="60px"
-										/>
+										<img src={logo} alt="logo" width="100%" height="60px" />
 									</Link>
 								</div>
 							</Typography>
@@ -291,10 +260,7 @@ class AppInner extends Component {
 									</Menu>
 								</div>
 							) : (
-								<Button
-									onClick={this.handleSignIn}
-									color="inherit"
-								>
+								<Button onClick={this.handleSignIn} color="inherit">
 									Sign In
 								</Button>
 							)}
