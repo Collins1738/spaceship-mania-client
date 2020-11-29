@@ -27,7 +27,8 @@ export default class ChallengePage extends Component {
 		const { name, date, creator } = this.state;
 		return (
 			<div>
-				Challenge
+				<div style={{ margin: "20px" }}>Challenge</div>
+
 				<div style={{ marginLeft: "600px", marginRight: "600px" }}>
 					<Card
 						style={{
@@ -47,7 +48,9 @@ export default class ChallengePage extends Component {
 							<Button
 								style={{
 									justifyContent: "center",
-
+									alignItems: "center",
+									alignSelf: "center",
+									alignContent: "center",
 									backgroundColor: "#4CAF50",
 								}}
 								onClick={this.handlePlay}

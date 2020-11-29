@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-//import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import Card from "@material-ui/core/Card";
 import Grid from "@material-ui/core/Grid";
@@ -50,18 +50,13 @@ class ChallengesPage extends Component {
 	}
 
 	render() {
+		//const createPage = this.props.createPage;
 		return (
 			<div>
 				<div style={{ margin: "20px" }}>
 					<h3>Challenges</h3>
 
-					<button
-						onClick={() => {
-							this.props.history.push("/challenge-creation");
-						}}
-					>
-						Make A Challenge
-					</button>
+					<button onClick={this.handleMake}>Make A Challenge</button>
 				</div>
 				<Grid container justify="center" spacing={2}>
 					{this.challengesList()}
@@ -69,7 +64,10 @@ class ChallengesPage extends Component {
 			</div>
 		);
 	}
-
+	handleCreation = () => {
+		const handleMake = this.props.history.push("/challenge-creation");
+		return <span handleMake={handleMake} />;
+	};
 	componentDidMount() {
 		axios
 			.get("/getAllChallenges")
@@ -158,7 +156,12 @@ class ChallengesPage extends Component {
 }
 
 const ChallengesProps = () => {
+	/*
+	function createPage() {
+		return this.props.history.push("/challenge-creation");
+	}*/
 	const classes = useStyles();
-	return <ChallengesPage classes={classes} />;
+
+	return <ChallengesPage classes={classes} /*createPage={createPage}*/ />;
 };
 export default ChallengesProps;
