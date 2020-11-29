@@ -145,23 +145,11 @@ class ChallengesPageInner extends Component {
 			);
 		});
 		return challengesList;
-		//const bull = <span className={classes.bullet}>•</span>;
-		//return <challengesList classes={classes} />;
 	};
 }
 
 const ChallengesPage = (props) => {
-	/*
-	function createPage() {
-		return this.props.history.push("/challenge-creation");
-	}*/
 	const classes = useStyles();
-
-	return (
-		<ChallengesPageInner
-			classes={classes}
-			{...props} /*createPage={createPage}*/
-		/>
-	);
+	return <ChallengesPageInner classes={classes} {...props} />;
 };
 export default ChallengesPage;
