@@ -1,4 +1,10 @@
-import { Typography } from "@material-ui/core";
+import {
+	Card,
+	CardActions,
+	CardActionArea,
+	CardContent,
+	Typography,
+} from "@material-ui/core";
 import React, { Component } from "react";
 import TextField from "@material-ui/core/TextField";
 import axios from "axios";
@@ -42,8 +48,7 @@ export default class UserPage extends Component {
 						Single Player Highscore: {highscoreSinglePlayer}
 					</Typography>
 					<Typography>
-						Number of Single Player Games Played:{" "}
-						{numSinglePlayerGamesPlayed}
+						Number of Single Player Games Played: {numSinglePlayerGamesPlayed}
 					</Typography>
 					<Typography>Challenges Made: </Typography>
 					{this.challengesMadeList()}
@@ -96,18 +101,27 @@ export default class UserPage extends Component {
 		const { challengesMade } = this.state;
 		return challengesMade.map((challenge) => {
 			return (
-				<div key={challenge.challengeId}>
-					<Typography>{challenge.name}</Typography>
-					<Typography>{challenge.date}</Typography>
-					<button
-						onClick={() => {
-							this.props.history.push(
-								`/challenge/${challenge.challengeId}`
-							);
-						}}
-					>
-						Load
-					</button>
+				<div
+					key={challenge.challengeId}
+					style={{ marginLeft: "600px", marginRight: "600px" }}
+				>
+					<Card>
+						<CardContent>
+							<Typography>{challenge.name}</Typography>
+							<Typography>{challenge.date}</Typography>
+						</CardContent>
+						<CardActions>
+							<button
+								onClick={() => {
+									this.props.history.push(
+										`/challenge/${challenge.challengeId}`
+									);
+								}}
+							>
+								Load
+							</button>
+						</CardActions>
+					</Card>
 				</div>
 			);
 		});
@@ -117,18 +131,27 @@ export default class UserPage extends Component {
 		const { challengesPlayed } = this.state;
 		return challengesPlayed.map((challenge) => {
 			return (
-				<div key={challenge.challengeId}>
-					<Typography>{challenge.name}</Typography>
-					<Typography>{challenge.date}</Typography>
-					<button
-						onClick={() => {
-							this.props.history.push(
-								`/challenge/${challenge.challengeId}`
-							);
-						}}
-					>
-						Load
-					</button>
+				<div
+					key={challenge.challengeId}
+					style={{ marginLeft: "600px", marginRight: "600px" }}
+				>
+					<Card>
+						<CardContent>
+							<Typography>{challenge.name}</Typography>
+							<Typography>{challenge.date}</Typography>
+						</CardContent>
+						<CardActions>
+							<button
+								onClick={() => {
+									this.props.history.push(
+										`/challenge/${challenge.challengeId}`
+									);
+								}}
+							>
+								Load
+							</button>
+						</CardActions>
+					</Card>
 				</div>
 			);
 		});

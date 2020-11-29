@@ -4,6 +4,13 @@ import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableContainer from "@material-ui/core/TableContainer";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import Paper from "@material-ui/core/Paper";
 
 export default class ChallengePage extends Component {
 	constructor(props) {
@@ -29,7 +36,7 @@ export default class ChallengePage extends Component {
 			<div>
 				<div style={{ margin: "20px" }}>Challenge</div>
 
-				<div style={{ marginLeft: "600px", marginRight: "600px" }}>
+				<div style={{ marginLeft: "550px", marginRight: "550px" }}>
 					<Card
 						style={{
 							minWidth: 275,
@@ -55,12 +62,24 @@ export default class ChallengePage extends Component {
 								}}
 								onClick={this.handlePlay}
 							>
-								PLAY
+								<b>PLAY</b>
 							</Button>
 						</CardActions>
 						<CardContent>
 							<h4>Highscores</h4>
-							{this.highscoresRender()}
+							{/*this.highscoresRender()*/}
+							<TableContainer component={Paper}>
+								<Table size="small" aria-label="a dense table">
+									<TableHead>
+										<TableRow component="th" align="left">
+											<TableCell align="inherit">Name</TableCell>
+											<TableCell align="inherit">Score</TableCell>
+											<TableCell align="inherit">Date</TableCell>
+										</TableRow>
+									</TableHead>
+									<TableBody>{this.highscoresRender()}</TableBody>
+								</Table>
+							</TableContainer>
 						</CardContent>
 					</Card>
 				</div>
@@ -85,11 +104,18 @@ export default class ChallengePage extends Component {
 
 	highscoresRender = () => {
 		const { highscores } = this.state;
+		//{displayName} {score} {date}
 		const highscoresRender = highscores.map((highscore) => {
 			const { displayName, score, date } = highscore;
 			return (
 				<div key={displayName + score + date}>
-					{displayName} {score} {date}
+					<TableRow component="th">
+						<TableCell component="th" scope="row" align="inherit">
+							{displayName}
+						</TableCell>
+						<TableCell align="inherit">{score}</TableCell>
+						<TableCell align="inherit">{date}</TableCell>
+					</TableRow>
 				</div>
 			);
 		});

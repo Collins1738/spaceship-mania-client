@@ -140,7 +140,7 @@ class ChallengesPage extends Component {
 							<CardActions>
 								<div className={classes.button}>
 									<Button size="small" href={url || ""} color="inherit">
-										Play
+										<b>Play</b>
 									</Button>
 								</div>
 							</CardActions>
