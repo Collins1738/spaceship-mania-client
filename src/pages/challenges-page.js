@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+//import { Link } from "react-router-dom";
 import axios from "axios";
 import Card from "@material-ui/core/Card";
 import Grid from "@material-ui/core/Grid";
@@ -27,7 +27,7 @@ const useStyles = makeStyles({
 		alignSelf: "center",
 		alignContent: "center",
 
-		color: "green",
+		backgroundColor: "#4CAF50",
 	},
 	bullet: {
 		display: "inline-block",
@@ -52,14 +52,17 @@ class ChallengesPage extends Component {
 	render() {
 		return (
 			<div>
-				<h3>Challenges</h3>
-				<button
-					onClick={() => {
-						this.props.history.push("/challenge-creation");
-					}}
-				>
-					Make A Challenge
-				</button>
+				<div style={{ margin: "20px" }}>
+					<h3>Challenges</h3>
+
+					<button
+						onClick={() => {
+							this.props.history.push("/challenge-creation");
+						}}
+					>
+						Make A Challenge
+					</button>
+				</div>
 				<Grid container justify="center" spacing={2}>
 					{this.challengesList()}
 				</Grid>
@@ -138,12 +141,7 @@ class ChallengesPage extends Component {
 							</CardContent>
 							<CardActions>
 								<div className={classes.button}>
-									<Button
-										variant="containted"
-										size="small"
-										href={url || ""}
-										color="inherit"
-									>
+									<Button size="small" href={url || ""} color="inherit">
 										Play
 									</Button>
 								</div>

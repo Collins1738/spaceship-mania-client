@@ -1,5 +1,9 @@
 import React, { Component } from "react";
 import axios from "axios";
+import Card from "@material-ui/core/Card";
+import CardActions from "@material-ui/core/CardActions";
+import CardContent from "@material-ui/core/CardContent";
+import Button from "@material-ui/core/Button";
 
 export default class ChallengePage extends Component {
 	constructor(props) {
@@ -24,12 +28,39 @@ export default class ChallengePage extends Component {
 		return (
 			<div>
 				Challenge
-				<h1>{name}</h1>
-				<h5>{creator}</h5>
-				<h5>{date}</h5>
-				<button onClick={this.handlePlay}>PLAY</button>
-				<h4>Highscores</h4>
-				{this.highscoresRender()}
+				<div style={{ marginLeft: "600px", marginRight: "600px" }}>
+					<Card
+						style={{
+							minWidth: 275,
+							justifyContent: "center",
+							alignItems: "center",
+							alignSelf: "center",
+							alignContent: "center",
+						}}
+					>
+						<CardContent>
+							<h1>{name}</h1>
+							<h5>{creator}</h5>
+							<h5>{date}</h5>
+						</CardContent>
+						<CardActions>
+							<Button
+								style={{
+									justifyContent: "center",
+
+									backgroundColor: "#4CAF50",
+								}}
+								onClick={this.handlePlay}
+							>
+								PLAY
+							</Button>
+						</CardActions>
+						<CardContent>
+							<h4>Highscores</h4>
+							{this.highscoresRender()}
+						</CardContent>
+					</Card>
+				</div>
 			</div>
 		);
 	}
