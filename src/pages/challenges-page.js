@@ -70,13 +70,7 @@ class ChallengesPageInner extends Component {
 			.then((response) => {
 				if (response.status === 200) {
 					var challenges = response.data.map((challenge) => {
-						const {
-							challengeId,
-							creator,
-							name,
-							date,
-							highscore,
-						} = challenge;
+						const { challengeId, creator, name, date, highscore } = challenge;
 						challenge = {
 							url: `/challenge/${challengeId}`,
 							creator,
@@ -118,10 +112,7 @@ class ChallengesPageInner extends Component {
 								<Typography variant="h5" component="h2">
 									{name}
 								</Typography>
-								<Typography
-									className={classes.pos}
-									color="textSecondary"
-								>
+								<Typography className={classes.pos} color="textSecondary">
 									<h4>{date}</h4>
 								</Typography>
 								<Typography variant="body2" component="p">
@@ -130,17 +121,8 @@ class ChallengesPageInner extends Component {
 							</CardContent>
 							<CardActions>
 								<div className={classes.button}>
-<<<<<<< HEAD
 									<Button size="small" href={url || ""} color="inherit">
 										<b>Play</b>
-=======
-									<Button
-										size="small"
-										href={url || ""}
-										color="inherit"
-									>
-										Play
->>>>>>> 4bec047156046f1b6f34595750a9e6bdaddfba7b
 									</Button>
 								</div>
 							</CardActions>
