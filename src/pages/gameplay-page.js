@@ -16,13 +16,13 @@ const styles = (theme) => ({
 		color: "black",
 	},
 	unselectedButton: {
-		boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)",
+		boxShadow: "0 3px 5px 2px rgba(64, 244, 4, 1)",
 		background: "black",
 		height: 80,
 		width: 80,
 	},
 	selectedButton: {
-		boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)",
+		boxShadow: "0 3px 5px 2px rgba(64, 244, 4, 1)",
 		background: "white",
 		height: 80,
 		width: 80,

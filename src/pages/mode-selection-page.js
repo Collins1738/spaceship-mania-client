@@ -9,16 +9,22 @@ export default class ModeSelectionPage extends Component {
 		this.enterSinglePlayerMode = this.enterSinglePlayerMode.bind(this);
 	}
 
+	
+
 	render() {
 		return (
 			<div>
-				<h1>Select a mode</h1>
+			<h1>Select a mode</h1>
 				<button onClick={this.enterSinglePlayerMode}>
 					Single Player Mode
 				</button>
 				<button onClick={this.enterChallengeMode}>
 					Challenge Mode
 				</button>
+				
+				
+				
+				
 			</div>
 		);
 	}

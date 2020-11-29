@@ -20,7 +20,7 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import MenuIcon from "@material-ui/icons/Menu";
 import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
+import MenuItem from "@material-ui/core/MenuItem"; 
 axios.defaults.baseURL =
 	"https://us-central1-space-maniaa.cloudfunctions.net/api";
 
@@ -46,6 +46,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 	menuButton: {
 		marginRight: theme.spacing(2),
+		backgroundColor: "white",
 	},
 	title: {
 		flexGrow: 1,
@@ -80,7 +81,9 @@ class AppInner extends Component {
 								>
 									<Toolbar>
 										<div>
-											<Button
+											<Button 
+												position="static"
+												style= {{backgroundColor:"white"}}
 												edge="start"
 												className={classes.menuButton}
 												color="inherit"
@@ -91,23 +94,21 @@ class AppInner extends Component {
 											>
 												<MenuIcon />
 											</Button>
-
+											
 											<Menu
 												id="simple-menu"
+												color= "white"
 												anchorEl={anchorEl}
 												keepMounted
 												open={Boolean(anchorEl)}
 												onClose={handleClose}
 											>
-												<MenuItem onClick={handleClose}>
-													Profile
-												</MenuItem>
-												<MenuItem onClick={handleClose}>
-													My account
-												</MenuItem>
-												<MenuItem onClick={handleClose}>
-													Logout
-												</MenuItem>
+												<MenuItem onClick={handleClose}>Profile </MenuItem>
+												<MenuItem onClick={handleClose}><Link to="/singlePlayer"><Button>Single Player</Button></Link></MenuItem> 
+												<MenuItem onClick={handleClose}><Link to="/challenges"><Button>Challenges </Button></Link> </MenuItem> 
+
+												<MenuItem onClick={handleClose}>Logout </MenuItem>
+												
 											</Menu>
 										</div>
 										<Typography
@@ -115,11 +116,11 @@ class AppInner extends Component {
 											className={classes.title}
 										>
 											<h2>Space Mania</h2>
+											<img src="./assets/logo.jpg" alt="logo"></img>
 										</Typography>
+
 										<Link to="/login">
-											<Button color="inherit">
-												Login
-											</Button>
+											<Button color="primary">Login</Button>
 										</Link>
 									</Toolbar>
 								</AppBar>
@@ -138,8 +139,9 @@ class AppInner extends Component {
 							</button>
 						</div>
 						<h2>Space Mania</h2>
+					
 						<h1>Hey {username || "Anonymous"}</h1>
-
+						
 						<Switch>
 							<Route component={LoginPage} exact path="/login" />
 							<Route
