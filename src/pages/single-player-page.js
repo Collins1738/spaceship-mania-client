@@ -14,6 +14,7 @@ class SinglePlayerPage extends Component {
 		return (
 			<div>
 				<h3>Single Player Page</h3>
+				<h3>Pick a Number of Tries </h3>
 				<button onClick={this.handleClick} style={{backgroundColor: "lightgreen", height: "50px", width: "120px", fontSize : "22px", fontFamily: "monospace", fontWeight: "bold"}}>Play</button>
 			</div>
 		); 

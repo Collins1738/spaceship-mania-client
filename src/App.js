@@ -95,14 +95,16 @@ class AppInner extends Component {
 											
 											<Menu
 												id="simple-menu"
-												/*color= "white"*/
+												color= "white"
 												anchorEl={anchorEl}
 												keepMounted
 												open={Boolean(anchorEl)}
 												onClose={handleClose}
 											>
-												<MenuItem onClick={handleClose}><Link to="/single-player"> Single Player </Link></MenuItem> 
-												<MenuItem onClick={handleClose}><Link to="/challenges">Challenges </Link> </MenuItem> 
+												<MenuItem onClick={handleClose}>Profile </MenuItem>
+												<MenuItem onClick={handleClose}><Link to="/singlePlayer"><Button>Single Player</Button></Link></MenuItem> 
+												<MenuItem onClick={handleClose}><Link to="/challenges"><Button>Challenges </Button></Link> </MenuItem> 
+
 												<MenuItem onClick={handleClose}>Logout </MenuItem>
 												
 											</Menu>
