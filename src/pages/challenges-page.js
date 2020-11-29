@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import axios from "axios";
 import Card from "@material-ui/core/Card";
 import Grid from "@material-ui/core/Grid";
@@ -29,11 +28,6 @@ const useStyles = makeStyles({
 
 		backgroundColor: "#4CAF50",
 	},
-	bullet: {
-		display: "inline-block",
-		margin: "0 2px",
-		transform: "scale(0.8)",
-	},
 	title: {
 		fontSize: 14,
 	},
@@ -42,7 +36,7 @@ const useStyles = makeStyles({
 	},
 });
 
-class ChallengesPage extends Component {
+class ChallengesPageInner extends Component {
 	constructor(props) {
 		super(props);
 
@@ -50,13 +44,18 @@ class ChallengesPage extends Component {
 	}
 
 	render() {
-		//const createPage = this.props.createPage;
 		return (
 			<div>
 				<div style={{ margin: "20px" }}>
 					<h3>Challenges</h3>
 
-					<button onClick={this.handleMake}>Make A Challenge</button>
+					<button
+						onClick={() => {
+							this.props.history.push("/challenge-creation");
+						}}
+					>
+						Make A Challenge
+					</button>
 				</div>
 				<Grid container justify="center" spacing={2}>
 					{this.challengesList()}
@@ -64,17 +63,20 @@ class ChallengesPage extends Component {
 			</div>
 		);
 	}
-	handleCreation = () => {
-		const handleMake = this.props.history.push("/challenge-creation");
-		return <span handleMake={handleMake} />;
-	};
+
 	componentDidMount() {
 		axios
 			.get("/getAllChallenges")
 			.then((response) => {
 				if (response.status === 200) {
 					var challenges = response.data.map((challenge) => {
-						const { challengeId, creator, name, date, highscore } = challenge;
+						const {
+							challengeId,
+							creator,
+							name,
+							date,
+							highscore,
+						} = challenge;
 						challenge = {
 							url: `/challenge/${challengeId}`,
 							creator,
@@ -92,24 +94,10 @@ class ChallengesPage extends Component {
 				console.log(err);
 			});
 	}
-	bull = () => {
-		const classes = this.props.classes;
-		return <span className={classes.bullet}>•</span>;
-	};
+
 	challengesList = () => {
-		/*<h1>{name}</h1>
-					<h2>Created by: {creator}</h2>
-					<h4>{date}</h4>
-					<h4>Highscore: {highscoreString}</h4>
-					<Link to={url || ""}>Load</Link>*/
-		//const classes = useStyles();
-		//const bull = <span className={classes.bullet}>•</span>;
-		/*
-		const Styleclasses = this.props.classes;
-		const bull = <span className={Styleclasses.bullet}>•</span>;*/
 		const classes = this.props.classes;
 		const { challenges } = this.state;
-		//const makeStyles = this.props.classes;
 		var challengesList = challenges.map((challenge) => {
 			const { name, url, creator, date, highscore } = challenge;
 			var highscoreString = highscore
@@ -125,12 +113,15 @@ class ChallengesPage extends Component {
 									color="textSecondary"
 									gutterBottom
 								>
-									<h2>Created by: {creator}</h2>
+									Created by: {creator}
 								</Typography>
 								<Typography variant="h5" component="h2">
 									{name}
 								</Typography>
-								<Typography className={classes.pos} color="textSecondary">
+								<Typography
+									className={classes.pos}
+									color="textSecondary"
+								>
 									<h4>{date}</h4>
 								</Typography>
 								<Typography variant="body2" component="p">
@@ -139,7 +130,11 @@ class ChallengesPage extends Component {
 							</CardContent>
 							<CardActions>
 								<div className={classes.button}>
-									<Button size="small" href={url || ""} color="inherit">
+									<Button
+										size="small"
+										href={url || ""}
+										color="inherit"
+									>
 										Play
 									</Button>
 								</div>
@@ -150,18 +145,11 @@ class ChallengesPage extends Component {
 			);
 		});
 		return challengesList;
-		//const bull = <span className={classes.bullet}>•</span>;
-		//return <challengesList classes={classes} />;
 	};
 }
 
-const ChallengesProps = () => {
-	/*
-	function createPage() {
-		return this.props.history.push("/challenge-creation");
-	}*/
+const ChallengesPage = (props) => {
 	const classes = useStyles();
-
-	return <ChallengesPage classes={classes} /*createPage={createPage}*/ />;
+	return <ChallengesPageInner classes={classes} {...props} />;
 };
-export default ChallengesProps;
+export default ChallengesPage;
