@@ -1,6 +1,20 @@
 import React, { Component } from "react";
+import Button from "@material-ui/core/Button";
+import withStyles from "@material-ui/core/styles/withStyles";
 
-export default class ModeSelectionPage extends Component {
+const styles = (theme) => ({
+	root: {
+		flexGrow: 1,
+	},
+	button: {
+		"&:hover": {
+			backgroundColor: "orange",
+			color: "black",
+		},
+	},
+});
+
+class ModeSelectionPage extends Component {
 	constructor(props) {
 		super(props);
 
@@ -9,26 +23,40 @@ export default class ModeSelectionPage extends Component {
 		this.enterSinglePlayerMode = this.enterSinglePlayerMode.bind(this);
 	}
 
-	
-
 	render() {
 		return (
 			<div>
-			<h1>Select a mode</h1>
-				<button onClick={this.enterSinglePlayerMode}>
-					Single Player Mode
-				</button>
-				<button onClick={this.enterChallengeMode}>
-					Challenge Mode
-				</button>
-				
-				
-				
-				
+				<h1>Select a mode</h1>
+				{this.buttons()}
 			</div>
 		);
 	}
 
+	buttons = () => {
+		const { classes } = this.props;
+		return (
+			<div style={{ padding: "50px" }}>
+				<span style={{ padding: "20px" }}>
+					<Button
+						className={classes.button}
+						onClick={this.enterSinglePlayerMode}
+						color="inherit"
+					>
+						Single Player Mode
+					</Button>
+				</span>
+				<span style={{ padding: "20px" }}>
+					<Button
+						className={classes.button}
+						onClick={this.enterChallengeMode}
+						color="inherit"
+					>
+						Challenge Mode
+					</Button>
+				</span>
+			</div>
+		);
+	};
 	enterSinglePlayerMode = () => {
 		this.props.history.push("/single-player");
 	};
@@ -37,3 +65,5 @@ export default class ModeSelectionPage extends Component {
 		this.props.history.push("/challenges");
 	};
 }
+
+export default withStyles(styles)(ModeSelectionPage);

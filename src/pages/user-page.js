@@ -11,6 +11,7 @@ export default class UserPage extends Component {
 			displayName: "",
 			challengesMade: [],
 			challengesPlayed: [],
+			userId: this.props.userId,
 		};
 
 		this.handleChange = this.handleChange.bind(this);
