@@ -6,29 +6,41 @@ import FormControl from "@material-ui/core/FormControl";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
-import { withStyles } from "@material-ui/core/styles";
+import withStyles from "@material-ui/styles/withStyles";
 import axios from "axios";
 
 const styles = (theme) => ({
 	root: {
 		flexGrow: 1,
 	},
+	input: {
+		color: "white",
+	},
 	paper: {
 		padding: theme.spacing(2),
 		textAlign: "center",
 		color: "black",
 	},
+	create: {
+		color: "white",
+		backgroundColor: "green",
+		"&:disabled": {
+			backgroundColor: "transparent",
+		},
+	},
 	unselectedButton: {
-		boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)",
-		background: "black",
-		height: 80,
-		width: 80,
+		border: 5,
+		borderRadius: 4,
+		background: theme.color.grey,
+		"&:hover": {
+			backgroundColor: theme.color.lightOrange,
+		},
 	},
 	selectedButton: {
-		boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)",
-		background: "white",
-		height: 80,
-		width: 80,
+		background: "green",
+		"&:hover": {
+			backgroundColor: "green",
+		},
 	},
 });
 
@@ -39,17 +51,20 @@ class ChallengeCreationPage extends Component {
 		this.state = {
 			userId: this.props.userId,
 			size: 2,
-			options: [2, 3, 4, 5, 6, 7],
+			sizeOptions: [2, 3, 4, 5, 6, 7],
+			triesOptions: [5, 10, 15, 20, 25, 30, 40, 50, 60],
 			positions: [],
 			tries: 5,
 			challengeName: "",
+			windowWidth: window.innerWidth,
 		};
 
 		this.handleChange = this.handleChange.bind(this);
 	}
 
 	render() {
-		const { size, tries, challengeName } = this.state;
+		const { size, tries, challengeName, positions } = this.state;
+		const { classes } = this.props;
 		return (
 			<div>
 				<h3>Create a challenge</h3>
@@ -59,39 +74,49 @@ class ChallengeCreationPage extends Component {
 							id="challengeName"
 							name="challengeName"
 							label="Pick a Challenge Name"
+							variant="outlined"
 							value={challengeName}
 							onChange={this.handleChange}
+							inputProps={{ className: classes.input }}
 						/>
 					</div>
 					<FormControl style={{ width: "200px" }}>
-						<InputLabel>Pick the Size of your board</InputLabel>
+						<InputLabel>Pick the Size</InputLabel>
 						<Select
 							id="size"
 							value={size}
 							name="size"
 							onChange={this.handleChange}
+							inputProps={{ className: classes.input }}
 						>
-							{this.menuItems()}
+							{this.menuItemsSize()}
 						</Select>
 					</FormControl>
 					<h4>Select the ship positions</h4>
 					<div style={{ margin: "20px" }}>{this.board()}</div>
 					<FormControl style={{ width: "250px" }}>
-						<InputLabel>
-							Pick the number of tries allowed
-						</InputLabel>
+						<InputLabel>Pick number of tries</InputLabel>
 						<Select
 							id="tries"
 							name="tries"
 							value={tries}
 							onChange={this.handleChange}
+							inputProps={{ className: classes.input }}
 						>
-							{this.menuItems()}
+							{this.menuItemsTries()}
 						</Select>
 					</FormControl>
 				</div>
 
-				<button onClick={this.handleSubmit}>Create Challenge</button>
+				<Button
+					className={classes.create}
+					color="inherit"
+					disabled={!positions[0]}
+					onClick={this.handleSubmit}
+					style={{ margin: "20px" }}
+				>
+					Create Challenge
+				</Button>
 			</div>
 		);
 	}
@@ -102,17 +127,30 @@ class ChallengeCreationPage extends Component {
 			alert("Login to create challenge");
 			this.props.history.push("/login");
 		}
+		window.addEventListener("resize", () => {
+			this.setState({ windowWidth: window.innerWidth });
+		});
 	}
 
-	menuItems = () => {
-		const { options } = this.state;
-		return options.map((option) => {
+	menuItemsSize = () => {
+		const { sizeOptions } = this.state;
+		return sizeOptions.map((option) => {
+			return <MenuItem value={option}>{option}</MenuItem>;
+		});
+	};
+
+	menuItemsTries = () => {
+		const { triesOptions } = this.state;
+		return triesOptions.map((option) => {
 			return <MenuItem value={option}>{option}</MenuItem>;
 		});
 	};
 
 	handleChange(event) {
 		this.setState({ [event.target.name]: event.target.value });
+		if (event.target.name === "size") {
+			this.setState({ positions: [] });
+		}
 	}
 
 	handleClick = (event) => {
@@ -171,14 +209,22 @@ class ChallengeCreationPage extends Component {
 			rows.push(this.row(i));
 			i += 1;
 		}
-		return <Grid container>{rows}</Grid>;
+		return (
+			<Grid spacing={1} container>
+				{rows}
+			</Grid>
+		);
 	};
 
 	row = (rowNumber) => {
-		const { size, positions } = this.state;
+		const { size, positions, windowWidth } = this.state;
 		const { classes } = this.props;
 		var row = [];
 		var i = 0;
+		var width = Math.round((0.6 * windowWidth) / size);
+		if (width > 90) {
+			width = 90;
+		}
 		while (i < size) {
 			var id = String(rowNumber) + String(i);
 			row.push(
@@ -190,6 +236,7 @@ class ChallengeCreationPage extends Component {
 								? classes.selectedButton
 								: classes.unselectedButton
 						}
+						style={{ height: width, width: width, minWidth: 1 }}
 						onClick={this.handleClick}
 						size="small"
 					></Button>
@@ -201,13 +248,13 @@ class ChallengeCreationPage extends Component {
 			<Grid
 				key={rowNumber}
 				className={classes.row}
-				style={{}}
 				container
 				direction="row"
 				justify="center"
 				item
 				xs={12}
 				alignContent="center"
+				spacing={1}
 			>
 				{row}
 			</Grid>

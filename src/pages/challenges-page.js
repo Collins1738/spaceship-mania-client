@@ -1,26 +1,77 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import axios from "axios";
+import Card from "@material-ui/core/Card";
+import Grid from "@material-ui/core/Grid";
+import CardActions from "@material-ui/core/CardActions";
+import CardContent from "@material-ui/core/CardContent";
+import Button from "@material-ui/core/Button";
+import Typography from "@material-ui/core/Typography";
+import withStyles from "@material-ui/styles/withStyles";
+import AddIcon from "@material-ui/icons/Add";
 
-export default class ChallengesPage extends Component {
+const styles = (theme) => ({
+	root: {
+		minWidth: 275,
+		backgroundColor: theme.color.grey,
+		color: theme.color.white,
+		"&:hover": {
+			backgroundColor: theme.color.primary,
+			color: theme.color.white,
+		},
+		outlineColor: theme.color.primary,
+	},
+	size: {
+		width: 50,
+		alignContent: "center",
+	},
+	button: {
+		backgroundColor: "#4CAF50",
+		display: "flex",
+	},
+	button2: {
+		"&:hover": {
+			backgroundColor: theme.color.primary,
+			color: theme.color.white,
+		},
+		color: theme.color.lightOrange,
+	},
+	date: {
+		fontSize: 10,
+	},
+	title: {
+		fontSize: 14,
+	},
+	pos: {
+		marginBottom: 12,
+	},
+});
+
+class ChallengesPage extends Component {
 	constructor(props) {
 		super(props);
-
 		this.state = { challenges: [] };
 	}
 
 	render() {
+		const { classes } = this.props;
 		return (
 			<div>
-				<h3>Challenges</h3>
-				<button
-					onClick={() => {
-						this.props.history.push("/challenge-creation");
-					}}
-				>
-					Make A Challenge
-				</button>
-				{this.challengesList()}
+				<div style={{ margin: "20px" }}>
+					<h3>Challenges</h3>
+					<Button
+						className={classes.button2}
+						onClick={() => {
+							this.props.history.push("/challenge-creation");
+						}}
+						color="inherit"
+						startIcon={<AddIcon />}
+					>
+						Make A Challenge
+					</Button>
+				</div>
+				<Grid container justify="center" spacing={2}>
+					{this.challengesList()}
+				</Grid>
 			</div>
 		);
 	}
@@ -57,6 +108,7 @@ export default class ChallengesPage extends Component {
 	}
 
 	challengesList = () => {
+		const classes = this.props.classes;
 		const { challenges } = this.state;
 		var challengesList = challenges.map((challenge) => {
 			const { name, url, creator, date, highscore } = challenge;
@@ -64,15 +116,52 @@ export default class ChallengesPage extends Component {
 				? `${highscore.displayName} - ${highscore.score}`
 				: `No highscore`;
 			return (
-				<div key={url}>
-					<h1>{name}</h1>
-					<h2>Created by: {creator}</h2>
-					<h4>{date}</h4>
-					<h4>Highscore: {highscoreString}</h4>
-					<Link to={url || ""}>Load</Link>
-				</div>
+				<Grid item key={url}>
+					<div styles={{ margin: "20px" }}>
+						<Card className={classes.root} raised={true}>
+							<CardContent>
+								<Typography
+									className={classes.title}
+									color="white"
+									gutterBottom
+								>
+									Created by: {creator}
+								</Typography>
+								<Typography variant="h6">
+									<b>{name}</b>
+								</Typography>
+								<Typography
+									className={classes.date}
+									color="white"
+								>
+									Created: {date}
+								</Typography>
+								<Typography variant="body2" component="p">
+									Highscore: {highscoreString}
+								</Typography>
+							</CardContent>
+							<CardActions>
+								<div style={{ width: "100%" }}>
+									<Button
+										size="small"
+										onClick={() => {
+											this.props.history.push(url);
+										}}
+										color="inherit"
+										style={{ width: "100%" }}
+										className={classes.button}
+									>
+										Load
+									</Button>
+								</div>
+							</CardActions>
+						</Card>
+					</div>
+				</Grid>
 			);
 		});
 		return challengesList;
 	};
 }
+
+export default withStyles(styles)(ChallengesPage);

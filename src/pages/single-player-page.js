@@ -10,37 +10,20 @@ import InputLabel from "@material-ui/core/InputLabel";
 import axios from "axios";
 
 
+
 class SinglePlayerPage extends Component {
-	constructor(props) {
-		super(props);
+  constructor(props) {
+    super(props);
 
 		this.state = {
-			//userId: this.props.userId,
 			size: 2,
 			options: [2, 3, 4, 5, 6, 7],
-			//positions: [],
-			//tries: 5,
-			//challengeName: "",
 			ships: 2,
 		};
 
 		this.handleClick = this.handleClick.bind(this);
 		this.handleChange = this.handleChange.bind(this);
 	}
-	// const [gameState, setGameState] = useState(GAME_STATE.BEFORE); // Just an enuerator or the three states see below
-  	// const [grid, setGrid] = useState([]);   // the grid
-  	// const [totalTime, setTotalTime] = useState(0);  // total time elapsed
-	// const [size, setSize] = useState(3);  // selected grid size
-	
-	// This will run when gameState changes.
-	// When a new game is started, generate a new random grid and reset solutions
-	// useEffect = ([gameState, size]) => {
-	// 	if (gameState === GAME_STATE.IN_PROGRESS) {
-	// 		//setGrid(RandomGrid(size));
-	// 		//setFoundSolutions([]);
-	// 		//get gameID here?
-	// 	}
-	// };
 	    
 	render() {
 		const {size} = this.state;
@@ -66,9 +49,9 @@ class SinglePlayerPage extends Component {
 					</Select>
 				</FormControl>
 			</div>
-		);
+		); 
 	}
-	//board size items
+	
 	menuItems = () => {
 		const { options } = this.state;
 		return options.map((option) => {
