@@ -136,11 +136,31 @@ class AppInner extends Component {
 										exact
 										path="/login"
 									/>
+
 									<Route
-										exact
 										path="/mode-selection"
 										render={(props) => (
-											<ModeSelectionPage {...props} />
+											<ModeSelectionPage
+												{...props}
+											/>
+										)}
+									/>
+									<Route
+										path="/single-player"
+										render={(props) => (
+											<SinglePlayerPage
+												userId={this.state.userId}
+												{...props}
+											/>
+										)}
+									/>
+									<Route
+										path="/gameplay/:gameId"
+										render={(props) => (
+											<GameplayPage
+												userId={this.state.userId}
+												{...props}
+											/>
 										)}
 									/>
 									<Route
@@ -157,20 +177,7 @@ class AppInner extends Component {
 											/>
 										)}
 									/>
-									<Route
-										component={SinglePlayerPage}
-										exact
-										path="/single-player"
-									/>
-									<Route
-										path="/gameplay/:gameId"
-										render={(props) => (
-											<GameplayPage
-												userId={this.state.userId}
-												{...props}
-											/>
-										)}
-									/>
+									
 									<Route
 										path="/challenge-creation"
 										render={(props) => (
