@@ -19,6 +19,16 @@ const styles = (theme) => ({
 	space: {
 		padding: "20px",
 	},
+	card: {
+		minWidth: 175,
+		backgroundColor: theme.color.grey,
+		color: theme.color.white,
+		"&:hover": {
+			backgroundColor: theme.color.primary,
+			color: theme.color.white,
+		},
+		outlineColor: theme.color.primary,
+	},
 });
 
 class UserPage extends Component {
@@ -132,31 +142,38 @@ class UserPage extends Component {
 
 	challengesMadeList = () => {
 		const { challengesMade } = this.state;
+		const { classes } = this.props;
 		return (
 			<div style={{ padding: "20px" }}>
 				<Grid container spacing={2} justify="center">
 					{challengesMade.map((challenge) => {
 						return (
 							<Grid key={challenge.challengeId} item>
-								<Card>
+								<Card className={classes.card}>
 									<CardContent>
-										<Typography>
-											{challenge.name}
+										<Typography variant="h6">
+											<b>{challenge.name}</b>
 										</Typography>
-										<Typography>
+										<Typography style={{ fontSize: 10 }}>
 											{challenge.date}
 										</Typography>
 									</CardContent>
 									<CardActions>
-										<button
+										<Button
 											onClick={() => {
 												this.props.history.push(
 													`/challenge/${challenge.challengeId}`
 												);
 											}}
+											color="inherit"
+											style={{
+												width: "100%",
+												height: "25px",
+												backgroundColor: "green",
+											}}
 										>
 											Load
-										</button>
+										</Button>
 									</CardActions>
 								</Card>
 							</Grid>
@@ -169,31 +186,38 @@ class UserPage extends Component {
 
 	challengesPlayedList = () => {
 		const { challengesPlayed } = this.state;
+		const { classes } = this.props;
 		return (
 			<div style={{ padding: "20px" }}>
 				<Grid container spacing={2} justify="center">
 					{challengesPlayed.map((challenge) => {
 						return (
 							<Grid item key={challenge.challengeId}>
-								<Card>
+								<Card className={classes.card}>
 									<CardContent>
-										<Typography>
-											{challenge.name}
+										<Typography variant="h6">
+											<b>{challenge.name}</b>
 										</Typography>
-										<Typography>
+										<Typography style={{ fontSize: 10 }}>
 											{challenge.date}
 										</Typography>
 									</CardContent>
 									<CardActions>
-										<button
+										<Button
 											onClick={() => {
 												this.props.history.push(
 													`/challenge/${challenge.challengeId}`
 												);
 											}}
+											color="inherit"
+											style={{
+												width: "100%",
+												height: "25px",
+												backgroundColor: "green",
+											}}
 										>
 											Load
-										</button>
+										</Button>
 									</CardActions>
 								</Card>
 							</Grid>

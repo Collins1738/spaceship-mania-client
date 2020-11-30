@@ -148,6 +148,9 @@ class ChallengeCreationPage extends Component {
 
 	handleChange(event) {
 		this.setState({ [event.target.name]: event.target.value });
+		if (event.target.name === "size") {
+			this.setState({ positions: [] });
+		}
 	}
 
 	handleClick = (event) => {
@@ -222,7 +225,6 @@ class ChallengeCreationPage extends Component {
 		if (width > 90) {
 			width = 90;
 		}
-		console.log(width);
 		while (i < size) {
 			var id = String(rowNumber) + String(i);
 			row.push(
