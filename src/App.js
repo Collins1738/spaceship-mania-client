@@ -12,7 +12,7 @@ import GameplayPage from "./pages/gameplay-page";
 import ChallengePage from "./pages/challenge-page";
 import ChallengeCreationPage from "./pages/challenge-creation-page";
 import UserPage from "./pages/user-page";
-import makeStyles from "@material-ui/styles/makeStyles";
+import makeStyles from "@material-ui/core/styles/makeStyles";
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 import ThemeProvider from "@material-ui/styles/ThemeProvider";
 import orange from "@material-ui/core/colors/orange";
@@ -87,15 +87,12 @@ export const theme = createMuiTheme({
 	},
 });
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
 	root: {
 		flexGrow: 1,
 	},
 	input: {
 		color: "white",
-	},
-	menuButton: {
-		marginRight: theme.spacing(2),
 	},
 	title: {
 		flexGrow: 1,
@@ -255,7 +252,6 @@ class AppInner extends Component {
 								<Button
 									position="static"
 									edge="start"
-									className={classes.menuButton}
 									color="inherit"
 									aria-label="menu"
 									aria-controls="simple-menu"
