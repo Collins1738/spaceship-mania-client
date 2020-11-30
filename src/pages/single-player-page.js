@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import Button from "@material-ui/core/Button"; //start/stop button
 //import {GAME_STATE} from './GameState.js';
 import MenuItem from '@material-ui/core/MenuItem'; //drop down menu
-import FormHelperText from '@material-ui/core/FormHelperText';
+//import FormHelperText from '@material-ui/core/FormHelperText';
 import Select from '@material-ui/core/Select';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from "@material-ui/core/InputLabel";
@@ -53,7 +53,7 @@ class SinglePlayerPage extends Component {
 			<div>
 				{/*
 				<input value={this.state.size}></input> */}
-				<button onClick={this.handleClick}> START </button> 
+				<Button onClick={this.handleClick}> START </Button> 
 				<FormControl style={{ width: "200px" }}>
 					<InputLabel>Select the board size</InputLabel>
 					<Select
@@ -81,33 +81,32 @@ class SinglePlayerPage extends Component {
 	}
 
 	async handleClick() {
-		let {size} = this.state
-		let {ships} = this.state;
-		switch(true){
-			case size = 2:
+		const {size} = this.state
+		let ships = 1;
+		switch(size){
+			case 2:
 				ships = 2;
 				break;
-			case size = 3:
+			case 3:
 				ships = 6;
 				break;
-			case size = 4:
+			case 4:
 				ships = 8;
 				break;
-			case size = 5:
+			case 5:
 				ships = 10;
 				break;
-			case size = 6:
+			case 6:
 				ships = 12;
 				break;
-			case size = 7:
+			case 7:
 				ships = 14;
 				break;
 			default:
-				ships = 2;
+				ships = 1;
 		}
-		//this.setState({size: value});
-		const res = await axios.post("/makeSinglePlayerGame", {userId: this.props.userId, numShips: {ships}, size: {size}});
-		console.log(res);
+		
+		const res = await axios.post("/makeSinglePlayerGame", {userId: this.props.userId, numShips: ships, size: size});
 		this.props.history.push(`/gameplay/${res.data.gameId}`);
 		// this game id is hard coded, We actually want this functions to actually make a request and get a gameId and then redirect to /gameplay/theRecievedGameId
 	}

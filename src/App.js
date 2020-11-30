@@ -158,9 +158,13 @@ class AppInner extends Component {
 								)}
 							/>
 							<Route
-								component={SinglePlayerPage}
-								exact
 								path="/single-player"
+								render={(props) => (
+									<SinglePlayerPage
+										userId={this.state.userId}
+										{...props}
+									/>
+								)}
 							/>
 							<Route
 								path="/gameplay/:gameId"
