@@ -1,29 +1,117 @@
 import React, { Component } from "react";
+import Button from "@material-ui/core/Button"; 
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from "@material-ui/core/InputLabel";
+import withStyles from "@material-ui/styles/withStyles";
+import axios from "axios";
+
+const styles =(theme)=>({
+	a: {
+		background: "green",
+		color: "white",
+		"&:hover": {
+			backgroundColor: "green",
+		},
+		margin: "40px",
+	},
+	input: {
+		color: "white"
+	},
+});
 
 
 class SinglePlayerPage extends Component {
   constructor(props) {
     super(props);
 
-		this.state = {};
+		this.state = {
+			size: 2,
+			options: [2, 3, 4, 5, 6, 7],
+			ships: 2,
+		};
 
 		this.handleClick = this.handleClick.bind(this);
+		this.handleChange = this.handleChange.bind(this);
 	}
-
+	    
 	render() {
+		const {size} = this.state;
+		const {classes} = this.props;
 		return (
 			<div>
-				<h3>Single Player Page</h3>
-				<h3>Pick a Number of Tries </h3>
-				<button onClick={this.handleClick} style={{backgroundColor: "lightgreen", height: "50px", width: "120px", fontSize : "22px", fontFamily: "monospace", fontWeight: "bold"}}>Play</button>
+				<div>
+					<FormControl 
+						style={{ width: "200px" }}
+					>
+						<InputLabel
+						>
+							Select the board size
+						</InputLabel>
+						<Select
+							id="size"
+							value={size}
+							name="size"
+							onChange={this.handleChange}
+							inputProps={{className: classes.input}}	
+						>
+							{this.menuItems()}
+						</Select>
+					</FormControl>
+				</div>
+
+				<Button 
+					className={classes.a} 
+					onClick={this.handleClick}
+					size="small"
+				> 
+					START 
+				</Button> 
 			</div>
 		); 
 	}
+	
+	menuItems = () => {
+		const { options } = this.state;
+		return options.map((option) => {
+			return <MenuItem value={option}>{option}</MenuItem>;
+		});
+	};
 
-	handleClick() {
-		this.props.history.push("/gameplay/BmJqiqUgRIg2i7xKl5Gr");
-		// this game id is hard coded, We actually want this functions to actually make a request and get a gameId and then redirect to /gameplay/theRecievedGameId
+	handleChange(event) {
+		this.setState({ [event.target.name]: event.target.value });
+	}
+
+	async handleClick() {
+		const {size} = this.state
+		let ships = 1;
+		switch(size){
+			case 2:
+				ships = 2;
+				break;
+			case 3:
+				ships = 3;
+				break;
+			case 4:
+				ships = 4;
+				break;
+			case 5:
+				ships = 5;
+				break;
+			case 6:
+				ships = 6;
+				break;
+			case 7:
+				ships = 7;
+				break;
+			default:
+				ships = 1;
+		}
+		
+		const res = await axios.post("/makeSinglePlayerGame", {userId: this.props.userId, numShips: ships, size: size});
+		this.props.history.push(`/gameplay/${res.data.gameId}`);
 	}
 }
 
-export default SinglePlayerPage;
+export default withStyles(styles)(SinglePlayerPage);
