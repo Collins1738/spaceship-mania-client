@@ -1,14 +1,25 @@
 import React, { Component } from "react";
-// import React, {useState} from 'react';
-import Button from "@material-ui/core/Button"; //start/stop button
-//import {GAME_STATE} from './GameState.js';
-import MenuItem from '@material-ui/core/MenuItem'; //drop down menu
-//import FormHelperText from '@material-ui/core/FormHelperText';
+import Button from "@material-ui/core/Button"; 
+import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from "@material-ui/core/InputLabel";
+import withStyles from "@material-ui/styles/withStyles";
 import axios from "axios";
 
+const styles =(theme)=>({
+	a: {
+		background: "green",
+		color: "white",
+		"&:hover": {
+			backgroundColor: "green",
+		},
+		margin: "40px",
+	},
+	input: {
+		color: "white"
+	},
+});
 
 
 class SinglePlayerPage extends Component {
@@ -27,27 +38,36 @@ class SinglePlayerPage extends Component {
 	    
 	render() {
 		const {size} = this.state;
+		const {classes} = this.props;
 		return (
-			//Modify to pass any props. CALLBACK functions to each of the components.
-			//Componenets can render output based on this data, or update state.
-			//Call gameplay during in progress?
-			//what to do when game ends?
-			
 			<div>
-				{/*
-				<input value={this.state.size}></input> */}
-				<Button onClick={this.handleClick}> START </Button> 
-				<FormControl style={{ width: "200px" }}>
-					<InputLabel>Select the board size</InputLabel>
-					<Select
-						id="size"
-						value={size}
-						name="size"
-						onChange={this.handleChange}
+				<div>
+					<FormControl 
+						style={{ width: "200px" }}
 					>
-						{this.menuItems()}
-					</Select>
-				</FormControl>
+						<InputLabel
+						>
+							Select the board size
+						</InputLabel>
+						<Select
+							id="size"
+							value={size}
+							name="size"
+							onChange={this.handleChange}
+							inputProps={{className: classes.input}}	
+						>
+							{this.menuItems()}
+						</Select>
+					</FormControl>
+				</div>
+
+				<Button 
+					className={classes.a} 
+					onClick={this.handleClick}
+					size="small"
+				> 
+					START 
+				</Button> 
 			</div>
 		); 
 	}
@@ -71,19 +91,19 @@ class SinglePlayerPage extends Component {
 				ships = 2;
 				break;
 			case 3:
-				ships = 6;
+				ships = 3;
 				break;
 			case 4:
-				ships = 8;
+				ships = 4;
 				break;
 			case 5:
-				ships = 10;
+				ships = 5;
 				break;
 			case 6:
-				ships = 12;
+				ships = 6;
 				break;
 			case 7:
-				ships = 14;
+				ships = 7;
 				break;
 			default:
 				ships = 1;
@@ -91,8 +111,7 @@ class SinglePlayerPage extends Component {
 		
 		const res = await axios.post("/makeSinglePlayerGame", {userId: this.props.userId, numShips: ships, size: size});
 		this.props.history.push(`/gameplay/${res.data.gameId}`);
-		// this game id is hard coded, We actually want this functions to actually make a request and get a gameId and then redirect to /gameplay/theRecievedGameId
 	}
 }
 
-export default SinglePlayerPage;
+export default withStyles(styles)(SinglePlayerPage);
