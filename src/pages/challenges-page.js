@@ -122,7 +122,6 @@ class ChallengesPage extends Component {
 							<CardContent>
 								<Typography
 									className={classes.title}
-									color="white"
 									gutterBottom
 								>
 									Created by: {creator}
@@ -130,10 +129,7 @@ class ChallengesPage extends Component {
 								<Typography variant="h6">
 									<b>{name}</b>
 								</Typography>
-								<Typography
-									className={classes.date}
-									color="white"
-								>
+								<Typography className={classes.date}>
 									Created: {date}
 								</Typography>
 								<Typography variant="body2" component="p">

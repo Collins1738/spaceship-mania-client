@@ -32,6 +32,13 @@ const styles = (theme) => ({
 			backgroundColor: "cyan",
 		},
 	},
+	endGame: {
+		backgroundColor: "red",
+		color: "white",
+		"&:hover": {
+			backgroundColor: "pink",
+		},
+	},
 	unselectedButton: {
 		border: 5,
 		borderRadius: 4,
@@ -39,16 +46,25 @@ const styles = (theme) => ({
 		"&:hover": {
 			backgroundColor: theme.color.lightOrange,
 		},
+		"&:disabled": {
+			background: theme.color.grey,
+		},
 	},
 	selectedButton: {
 		background: theme.color.primary,
 		"&:hover": {
 			backgroundColor: theme.color.primary,
 		},
+		"&:disabled": {
+			backgroundColor: theme.color.primary,
+		},
 	},
 	correctButton: {
 		background: "green",
 		"&:hover": {
+			backgroundColor: "green",
+		},
+		"&:disabled": {
 			backgroundColor: "green",
 		},
 	},
@@ -155,15 +171,12 @@ class GamplayPage extends Component {
 
 								<Typography>Tries left: {triesLeft}</Typography>
 								<Typography>Score: {score}</Typography>
-								{gameWon ? (
-									<Typography>You won! </Typography>
-								) : (
-									<div></div>
-								)}
-								<Typography>
-									For testing purposes, the answers are (0,
-									0), (1, 0), (0, 3)
-								</Typography>
+								<Button
+									onClick={this.handleEnd}
+									className={classes.endGame}
+								>
+									End Game
+								</Button>
 							</div>
 						)}
 					</div>
@@ -188,7 +201,14 @@ class GamplayPage extends Component {
 	};
 
 	row = (rowNumber) => {
-		const { size, positions, correctPositions, windowWidth } = this.state;
+		const {
+			size,
+			positions,
+			correctPositions,
+			windowWidth,
+			numShips,
+			gameOver,
+		} = this.state;
 		const { classes } = this.props;
 		var row = [];
 		var i = 0;
@@ -212,6 +232,12 @@ class GamplayPage extends Component {
 						onClick={this.handleClick}
 						size="small"
 						style={{ height: width, width: width, minWidth: 1 }}
+						disabled={
+							gameOver ||
+							(!positions.includes(id) &&
+								!correctPositions.includes(id) &&
+								positions.length === numShips)
+						}
 					></Button>
 				</Grid>
 			);
@@ -265,6 +291,13 @@ class GamplayPage extends Component {
 			});
 	}
 
+	componentWillUnmount() {
+		const { gameOver, gameId } = this.state;
+		if (!gameOver) {
+			axios.post("/endGame", { gameId });
+		}
+	}
+
 	handleClick = (event) => {
 		const { id } = event.currentTarget;
 		const { positions, numShips } = this.state;
@@ -279,6 +312,26 @@ class GamplayPage extends Component {
 			newPositions.push(id);
 			this.setState({ positions: newPositions });
 		}
+	};
+
+	handleEnd = () => {
+		const { gameId } = this.state;
+		axios.post("/endGame", { gameId }).then((response) => {
+			const { gameOver, gameWon, positions, score } = response.data;
+			var correctPositions = [];
+			if (positions) {
+				correctPositions = positions.map((position) => {
+					return `${position.x}${position.y}`;
+				});
+			}
+			this.setState({
+				score,
+				gameOver,
+				gameWon,
+				correctPositions,
+				loading: false,
+			});
+		});
 	};
 
 	handleSubmit = async () => {

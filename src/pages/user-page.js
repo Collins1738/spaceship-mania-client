@@ -19,8 +19,12 @@ const styles = (theme) => ({
 	space: {
 		padding: "20px",
 	},
+	loadButton: {
+		backgroundColor: "#4CAF50",
+		display: "flex",
+	},
 	card: {
-		minWidth: 175,
+		minWidth: 275,
 		backgroundColor: theme.color.grey,
 		color: theme.color.white,
 		"&:hover": {
@@ -165,11 +169,11 @@ class UserPage extends Component {
 													`/challenge/${challenge.challengeId}`
 												);
 											}}
+											className={classes.loadButton}
 											color="inherit"
 											style={{
 												width: "100%",
 												height: "25px",
-												backgroundColor: "green",
 											}}
 										>
 											Load
@@ -213,8 +217,8 @@ class UserPage extends Component {
 											style={{
 												width: "100%",
 												height: "25px",
-												backgroundColor: "green",
 											}}
+											className={classes.loadButton}
 										>
 											Load
 										</Button>
