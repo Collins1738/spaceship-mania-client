@@ -1,15 +1,27 @@
-import {
-	Card,
-	CardActions,
-	CardActionArea,
-	CardContent,
-	Typography,
-} from "@material-ui/core";
 import React, { Component } from "react";
 import TextField from "@material-ui/core/TextField";
+import Card from "@material-ui/core/Card";
+import CardActions from "@material-ui/core/CardActions";
+import CardContent from "@material-ui/core/CardContent";
+import Typography from "@material-ui/core/Typography";
+import Grid from "@material-ui/core/Grid";
+import Button from "@material-ui/core/Button";
 import axios from "axios";
+import withStyles from "@material-ui/core/styles/withStyles";
 
-export default class UserPage extends Component {
+const styles = (theme) => ({
+	root: {
+		flexGrow: 1,
+	},
+	input: {
+		color: "white",
+	},
+	space: {
+		padding: "20px",
+	},
+});
+
+class UserPage extends Component {
 	constructor(props) {
 		super(props);
 
@@ -30,6 +42,7 @@ export default class UserPage extends Component {
 			numSinglePlayerGamesPlayed,
 			highscoreSinglePlayer,
 		} = this.state;
+		const { classes } = this.props;
 		return (
 			<div>
 				<div style={{ padding: "20px" }}>
@@ -39,22 +52,41 @@ export default class UserPage extends Component {
 						label="Display Name"
 						value={displayName}
 						onChange={this.handleChange}
+						inputProps={{ className: classes.input }}
+						variant="outlined"
 					/>
-					<button id="submit" onClick={this.handleSubmit}>
-						Change
-					</button>
+					<span style={{ padding: "20px" }}>
+						<Button
+							id="submit"
+							onClick={this.handleSubmit}
+							color="primary"
+							variant="contained"
+							style={{ width: "100px", height: "60px" }}
+						>
+							Change
+						</Button>
+					</span>
 				</div>
 				<div>
-					<Typography>
-						Single Player Highscore: {highscoreSinglePlayer}
-					</Typography>
-					<Typography>
-						Number of Single Player Games Played: {numSinglePlayerGamesPlayed}
-					</Typography>
-					<Typography>Challenges Made: </Typography>
-					{this.challengesMadeList()}
-					<Typography>Challenges Played: </Typography>
-					{this.challengesPlayedList()}
+					<div className={classes.space}>
+						<Typography>
+							Single Player Highscore: {highscoreSinglePlayer}
+						</Typography>
+					</div>
+					<div className={classes.space}>
+						<Typography>
+							Number of Single Player Games Played:{" "}
+							{numSinglePlayerGamesPlayed}
+						</Typography>
+					</div>
+					<div className={classes.space}>
+						<Typography>Challenges Made: </Typography>
+						{this.challengesMadeList()}
+					</div>
+					<div className={classes.space}>
+						<Typography>Challenges Played: </Typography>
+						{this.challengesPlayedList()}
+					</div>
 				</div>
 			</div>
 		);
@@ -100,61 +132,77 @@ export default class UserPage extends Component {
 
 	challengesMadeList = () => {
 		const { challengesMade } = this.state;
-		return challengesMade.map((challenge) => {
-			return (
-				<div
-					key={challenge.challengeId}
-					style={{ marginLeft: "600px", marginRight: "600px" }}
-				>
-					<Card>
-						<CardContent>
-							<Typography>{challenge.name}</Typography>
-							<Typography>{challenge.date}</Typography>
-						</CardContent>
-						<CardActions>
-							<button
-								onClick={() => {
-									this.props.history.push(
-										`/challenge/${challenge.challengeId}`
-									);
-								}}
-							>
-								Load
-							</button>
-						</CardActions>
-					</Card>
-				</div>
-			);
-		});
+		return (
+			<div style={{ padding: "20px" }}>
+				<Grid container spacing={2} justify="center">
+					{challengesMade.map((challenge) => {
+						return (
+							<Grid key={challenge.challengeId} item>
+								<Card>
+									<CardContent>
+										<Typography>
+											{challenge.name}
+										</Typography>
+										<Typography>
+											{challenge.date}
+										</Typography>
+									</CardContent>
+									<CardActions>
+										<button
+											onClick={() => {
+												this.props.history.push(
+													`/challenge/${challenge.challengeId}`
+												);
+											}}
+										>
+											Load
+										</button>
+									</CardActions>
+								</Card>
+							</Grid>
+						);
+					})}
+				</Grid>
+			</div>
+		);
 	};
 
 	challengesPlayedList = () => {
 		const { challengesPlayed } = this.state;
-		return challengesPlayed.map((challenge) => {
-			return (
-				<div
-					key={challenge.challengeId}
-					style={{ marginLeft: "600px", marginRight: "600px" }}
-				>
-					<Card>
-						<CardContent>
-							<Typography>{challenge.name}</Typography>
-							<Typography>{challenge.date}</Typography>
-						</CardContent>
-						<CardActions>
-							<button
-								onClick={() => {
-									this.props.history.push(
-										`/challenge/${challenge.challengeId}`
-									);
-								}}
-							>
-								Load
-							</button>
-						</CardActions>
-					</Card>
-				</div>
-			);
-		});
+		return (
+			<div style={{ padding: "20px" }}>
+				<Grid container spacing={2} justify="center">
+					{challengesPlayed.map((challenge) => {
+						return (
+							<Grid item key={challenge.challengeId}>
+								<Card>
+									<CardContent>
+										<Typography>
+											{challenge.name}
+										</Typography>
+										<Typography>
+											{challenge.date}
+										</Typography>
+									</CardContent>
+									<CardActions>
+										<button
+											onClick={() => {
+												this.props.history.push(
+													`/challenge/${challenge.challengeId}`
+												);
+											}}
+										>
+											Load
+										</button>
+									</CardActions>
+								</Card>
+							</Grid>
+						);
+					})}
+				</Grid>
+			</div>
+		);
 	};
 }
+
+export default withStyles(styles)(UserPage);

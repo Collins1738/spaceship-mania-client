@@ -1,6 +1,6 @@
 .App {
 	text-align: center;
-	/*background-color: blueviolet;*/
+	/* background-color: blueviolet; */
 	color: white;
 	font-family: monospace;
 	font-size: x-large;
@@ -17,17 +17,15 @@
 	}
 }
 
-
-
 body {
 	/*GIF Source: https://giphy.com/gifs/night-aRZ4vTsHnyW6A*/
-	background-image: url('assets/stars.gif');
-    background-size: cover;
+	background-image: url("assets/stars.gif");
+	background-size: cover;
 }
 
 .App-header {
 	/*background-color: blueviolet;*/
-	min-height: 100vh;       
+	min-height: 100vh;
 	display: flex;
 	flex-direction: column;
 	align-items: center;

@@ -8,9 +8,10 @@ const styles = (theme) => ({
 	},
 	button: {
 		"&:hover": {
-			backgroundColor: "orange",
-			color: "black",
+			backgroundColor: theme.color.primary,
+			color: theme.color.white,
 		},
+		color: theme.color.lightOrange,
 	},
 });
 
@@ -40,7 +41,6 @@ class ModeSelectionPage extends Component {
 					<Button
 						className={classes.button}
 						onClick={this.enterSinglePlayerMode}
-						color="inherit"
 					>
 						Single Player Mode
 					</Button>

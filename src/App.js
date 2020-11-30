@@ -12,8 +12,10 @@ import GameplayPage from "./pages/gameplay-page";
 import ChallengePage from "./pages/challenge-page";
 import ChallengeCreationPage from "./pages/challenge-creation-page";
 import UserPage from "./pages/user-page";
-
-import { makeStyles, createMuiTheme } from "@material-ui/core/styles";
+import makeStyles from "@material-ui/styles/makeStyles";
+import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
+import ThemeProvider from "@material-ui/styles/ThemeProvider";
+import orange from "@material-ui/core/colors/orange";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
@@ -31,16 +33,56 @@ axios.defaults.baseURL =
 export const theme = createMuiTheme({
 	palette: {
 		primary: {
-			light: "#757ce8",
-			main: "#3f50b5",
-			dark: "#002884",
+			light: orange["500"],
+			main: orange["900"],
+			dark: orange["700"],
 			contrastText: "#fff",
 		},
 		secondary: {
 			light: "#ff7961",
-			main: "#f44336",
+			main: "#FFFFFF",
 			dark: "#ba000d",
 			contrastText: "#000",
+		},
+	},
+
+	color: {
+		primary: orange["900"],
+		lightOrange: orange["300"],
+		white: "#FFFFFF",
+		black: "#000000",
+		grey: "#494949",
+	},
+
+	overrides: {
+		MuiFormControlLabel: {
+			"&$focused": {
+				color: orange["900"],
+			},
+		},
+		MuiOutlinedInput: {
+			root: {
+				position: "relative",
+				"& $notchedOutline": {
+					borderColor: orange["900"],
+				},
+				"&:hover:not($disabled):not($focused):not($error) $notchedOutline": {
+					borderColor: orange["900"],
+					// Reset on touch devices, it doesn't add specificity
+					"@media (hover: none)": {
+						borderColor: orange["900"],
+					},
+				},
+				"&$focused $notchedOutline": {
+					borderColor: orange["900"],
+					borderWidth: 1,
+				},
+			},
+		},
+		MuiFormLabel: {
+			root: {
+				color: orange["900"],
+			},
 		},
 	},
 });
@@ -48,6 +90,9 @@ export const theme = createMuiTheme({
 const useStyles = makeStyles((theme) => ({
 	root: {
 		flexGrow: 1,
+	},
+	input: {
+		color: "white",
 	},
 	menuButton: {
 		marginRight: theme.spacing(2),
@@ -79,63 +124,86 @@ class AppInner extends Component {
 		const classes = this.props.classes;
 		return (
 			<div className="App">
-				<div className="page">
-					<Router>
-						{this.navbar()}
-						<div className={classes.body}>
-							<h2>Space Mania</h2>
+				<ThemeProvider theme={theme}>
+					<div className="page">
+						<Router>
+							{this.navbar()}
+							<div className={classes.body}>
+								<h2>Space Mania</h2>
 
-							<h1>Hey {username || "Anonymous"}</h1>
+								<h1>Hey {username || "Anonymous"}</h1>
 
-							<Switch>
-								<Route component={LoginPage} exact path="/login" />
-								<Route
-									exact
-									path="/mode-selection"
-									render={(props) => <ModeSelectionPage {...props} />}
-								/>
-								<Route component={ChallengesPage} exact path="/challenges" />
-								<Route
-									path="/challenge/:challengeId"
-									render={(props) => (
-										<ChallengePage userId={this.state.userId} {...props} />
-									)}
-								/>
-								<Route
-									component={SinglePlayerPage}
-									exact
-									path="/single-player"
-								/>
-								<Route
-									path="/gameplay/:gameId"
-									render={(props) => (
-										<GameplayPage userId={this.state.userId} {...props} />
-									)}
-								/>
-								<Route
-									path="/challenge-creation"
-									render={(props) => (
-										<ChallengeCreationPage
-											userId={this.state.userId}
-											{...props}
-										/>
-									)}
-								/>
-								<Route
-									path="/user"
-									render={(props) => (
-										<UserPage userId={this.state.userId} {...props} />
-									)}
-								/>
-								<Route
-									exact
-									path="/"
-									render={(props) => <ModeSelectionPage {...props} />}
-								/>
-							</Switch>
-						</div>
-					</Router>
-				</div>
+								<Switch>
+									<Route
+										component={LoginPage}
+										exact
+										path="/login"
+									/>
+									<Route
+										exact
+										path="/mode-selection"
+										render={(props) => (
+											<ModeSelectionPage {...props} />
+										)}
+									/>
+									<Route
+										component={ChallengesPage}
+										exact
+										path="/challenges"
+									/>
+									<Route
+										path="/challenge/:challengeId"
+										render={(props) => (
+											<ChallengePage
+												userId={this.state.userId}
+												{...props}
+											/>
+										)}
+									/>
+									<Route
+										component={SinglePlayerPage}
+										exact
+										path="/single-player"
+									/>
+									<Route
+										path="/gameplay/:gameId"
+										render={(props) => (
+											<GameplayPage
+												userId={this.state.userId}
+												{...props}
+											/>
+										)}
+									/>
+									<Route
+										path="/challenge-creation"
+										render={(props) => (
+											<ChallengeCreationPage
+												userId={this.state.userId}
+												{...props}
+											/>
+										)}
+									/>
+									<Route
+										path="/user"
+										render={(props) => (
+											<UserPage
+												userId={this.state.userId}
+												{...props}
+											/>
+										)}
+									/>
+									<Route
+										exact
+										path="/"
+										render={(props) => (
+											<ModeSelectionPage {...props} />
+										)}
+									/>
+								</Switch>
+							</div>
+						</Router>
+					</div>
+				</ThemeProvider>
 			</div>
 		);
 	}
@@ -143,11 +211,13 @@ class AppInner extends Component {
 	async componentDidMount() {
 		firebase.auth().onAuthStateChanged((user) => {
 			if (user && user.uid !== this.state.userId) {
-				axios.post("/getUserInfo", { userId: user.uid }).then((response) => {
-					this.setState({
-						username: response.data.displayName,
+				axios
+					.post("/getUserInfo", { userId: user.uid })
+					.then((response) => {
+						this.setState({
+							username: response.data.displayName,
+						});
 					});
-				});
 				this.setState({ userId: user.uid });
 			}
 		});
@@ -176,7 +246,10 @@ class AppInner extends Component {
 		return (
 			<div className="navbar">
 				<div className={classes.root}>
-					<AppBar position="fixed" style={{ backgroundColor: "black" }}>
+					<AppBar
+						position="fixed"
+						style={{ backgroundColor: "black" }}
+					>
 						<Toolbar>
 							<div>
 								<Button
@@ -218,7 +291,12 @@ class AppInner extends Component {
 							<Typography variant="h6" className={classes.title}>
 								<div style={{ padding: "30px" }}>
 									<Link to="/mode-selection">
-										<img src={logo} alt="logo" width="100%" height="60px" />
+										<img
+											src={logo}
+											alt="logo"
+											width="100%"
+											height="60px"
+										/>
 									</Link>
 								</div>
 							</Typography>
@@ -260,7 +338,10 @@ class AppInner extends Component {
 									</Menu>
 								</div>
 							) : (
-								<Button onClick={this.handleSignIn} color="inherit">
+								<Button
+									onClick={this.handleSignIn}
+									color="inherit"
+								>
 									Sign In
 								</Button>
 							)}
