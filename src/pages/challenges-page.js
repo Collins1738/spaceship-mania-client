@@ -6,27 +6,37 @@ import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core";
+import withStyles from "@material-ui/styles/withStyles";
+import AddIcon from "@material-ui/icons/Add";
 
-const useStyles = makeStyles({
+const styles = (theme) => ({
 	root: {
 		minWidth: 275,
-		justifyContent: "center",
-		alignItems: "center",
-		alignSelf: "center",
-		alignContent: "center",
+		backgroundColor: theme.color.grey,
+		color: theme.color.white,
+		"&:hover": {
+			backgroundColor: theme.color.primary,
+			color: theme.color.white,
+		},
+		outlineColor: theme.color.primary,
 	},
 	size: {
 		width: 50,
 		alignContent: "center",
 	},
 	button: {
-		justifyContent: "center",
-		alignItems: "center",
-		alignSelf: "center",
-		alignContent: "center",
-
 		backgroundColor: "#4CAF50",
+		display: "flex",
+	},
+	button2: {
+		"&:hover": {
+			backgroundColor: theme.color.primary,
+			color: theme.color.white,
+		},
+		color: theme.color.lightOrange,
+	},
+	date: {
+		fontSize: 10,
 	},
 	title: {
 		fontSize: 14,
@@ -36,27 +46,32 @@ const useStyles = makeStyles({
 	},
 });
 
-class ChallengesPageInner extends Component {
+class ChallengesPage extends Component {
 	constructor(props) {
 		super(props);
-
-		this.state = { challenges: [] };
+		this.state = { challenges: [], loading: true };
 	}
 
 	render() {
+		const { classes } = this.props;
 		return (
 			<div>
 				<div style={{ margin: "20px" }}>
 					<h3>Challenges</h3>
-
-					<button
+					<Button
+						className={classes.button2}
 						onClick={() => {
 							this.props.history.push("/challenge-creation");
 						}}
+						color="inherit"
+						startIcon={<AddIcon />}
 					>
 						Make A Challenge
-					</button>
+					</Button>
 				</div>
+				{this.state.loading && (
+					<Typography color="inherit">Loading...</Typography>
+				)}
 				<Grid container justify="center" spacing={2}>
 					{this.challengesList()}
 				</Grid>
@@ -86,7 +101,7 @@ class ChallengesPageInner extends Component {
 						};
 						return challenge;
 					});
-					this.setState({ challenges });
+					this.setState({ challenges, loading: false });
 				}
 			})
 			.catch((err) => {
@@ -104,38 +119,38 @@ class ChallengesPageInner extends Component {
 				? `${highscore.displayName} - ${highscore.score}`
 				: `No highscore`;
 			return (
-				<Grid item>
+				<Grid item key={url}>
 					<div styles={{ margin: "20px" }}>
-						<Card className={classes.root}>
+						<Card className={classes.root} raised={true}>
 							<CardContent>
 								<Typography
 									className={classes.title}
-									color="textSecondary"
 									gutterBottom
 								>
 									Created by: {creator}
 								</Typography>
-								<Typography variant="h5" component="h2">
-									{name}
+								<Typography variant="h6">
+									<b>{name}</b>
 								</Typography>
-								<Typography
-									className={classes.pos}
-									color="textSecondary"
-								>
-									<h4>{date}</h4>
+								<Typography className={classes.date}>
+									Created: {date}
 								</Typography>
 								<Typography variant="body2" component="p">
-									<h4>Highscore: {highscoreString}</h4>
+									Highscore: {highscoreString}
 								</Typography>
 							</CardContent>
 							<CardActions>
-								<div className={classes.button}>
+								<div style={{ width: "100%" }}>
 									<Button
 										size="small"
-										href={url || ""}
+										onClick={() => {
+											this.props.history.push(url);
+										}}
 										color="inherit"
+										style={{ width: "100%" }}
+										className={classes.button}
 									>
-										Play
+										Load
 									</Button>
 								</div>
 							</CardActions>
@@ -148,8 +163,4 @@ class ChallengesPageInner extends Component {
 	};
 }
 
-const ChallengesPage = (props) => {
-	const classes = useStyles();
-	return <ChallengesPageInner classes={classes} {...props} />;
-};
-export default ChallengesPage;
+export default withStyles(styles)(ChallengesPage);

@@ -1,11 +1,26 @@
 import React, { Component } from "react";
 import axios from "axios";
-import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
+import Grid from "@material-ui/core/Grid";
+import Typography from "@material-ui/core/Typography";
+import withStyles from "@material-ui/styles/withStyles";
+import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 
-export default class ChallengePage extends Component {
+const styles = (theme) => ({
+	a: {
+		color: theme.color.primary,
+	},
+	play: {
+		color: "white",
+		backgroundColor: "green",
+		"&:hover": {
+			backgroundColor: "#006600",
+			color: "white",
+		},
+	},
+});
+
+class ChallengePage extends Component {
 	constructor(props) {
 		super(props);
 
@@ -25,53 +40,49 @@ export default class ChallengePage extends Component {
 
 	render() {
 		const { name, date, creator } = this.state;
+		const { classes } = this.props;
 		return (
 			<div>
 				<div style={{ margin: "20px" }}>Challenge</div>
 
-				<div style={{ marginLeft: "600px", marginRight: "600px" }}>
-					<Card
+				<div className={classes.a}>
+					<Typography variant="h3">{name}</Typography>
+					<Typography variant="h5">By: {creator}</Typography>
+					<Typography variant="body2">{date}</Typography>
+					<Button
 						style={{
-							minWidth: 275,
-							justifyContent: "center",
-							alignItems: "center",
-							alignSelf: "center",
-							alignContent: "center",
+							width: "200px",
+							height: "100px",
+							margin: "30px",
 						}}
+						className={classes.play}
+						onClick={this.handlePlay}
+						startIcon={<PlayArrowIcon />}
 					>
-						<CardContent>
-							<h1>{name}</h1>
-							<h5>{creator}</h5>
-							<h5>{date}</h5>
-						</CardContent>
-						<CardActions>
-							<Button
-								style={{
-									justifyContent: "center",
-									alignItems: "center",
-									alignSelf: "center",
-									alignContent: "center",
-									backgroundColor: "#4CAF50",
-								}}
-								onClick={this.handlePlay}
-							>
-								PLAY
-							</Button>
-						</CardActions>
-						<CardContent>
-							<h4>Highscores</h4>
-							{this.highscoresRender()}
-						</CardContent>
-					</Card>
+						<b>PLAY</b>
+					</Button>
+					<Typography>Highscores</Typography>
+					{this.highscoresRender()}
 				</div>
 			</div>
 		);
 	}
 
 	componentDidMount() {
-		const { challengeId } = this.state;
+		const { challengeId, userId } = this.state;
+		if (!userId) {
+			alert("Login to Load a challenge");
+			this.props.history.push("/login");
+		}
 		axios.post("/getChallenge", { challengeId }).then((response) => {
-			const { highscores, creator, date, name, size, tries } = response.data;
+			const {
+				highscores,
+				creator,
+				date,
+				name,
+				size,
+				tries,
+			} = response.data;
 			this.setState({
 				highscores,
 				creator,
@@ -88,12 +99,26 @@ export default class ChallengePage extends Component {
 		const highscoresRender = highscores.map((highscore) => {
 			const { displayName, score, date } = highscore;
 			return (
-				<div key={displayName + score + date}>
-					{displayName} {score} {date}
-				</div>
+				<Grid key={displayName + score + date} item container>
+					<Grid item xs={5}>
+						{displayName}
+					</Grid>
+					<Grid item xs={3}>
+						{score}
+					</Grid>
+					<Grid item xs={4}>
+						{date}
+					</Grid>
+				</Grid>
 			);
 		});
-		return highscoresRender[0] ? highscoresRender : <div>No highscores</div>;
+		return highscoresRender[0] ? (
+			<Grid container spacing={1}>
+				{highscoresRender}
+			</Grid>
+		) : (
+			<div>No highscores</div>
+		);
 	};
 
 	handlePlay() {
@@ -110,3 +135,5 @@ export default class ChallengePage extends Component {
 			});
 	}
 }
+
+export default withStyles(styles)(ChallengePage);
