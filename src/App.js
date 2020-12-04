@@ -21,6 +21,9 @@ import Button from "@material-ui/core/Button";
 import MenuIcon from "@material-ui/icons/Menu";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
+import Grid from "@material-ui/core/Button";
+import Menuu from "@material-ui/core/Menu";
+
 axios.defaults.baseURL =
 	"https://us-central1-space-maniaa.cloudfunctions.net/api";
 
@@ -74,7 +77,10 @@ class AppInner extends Component {
 					<Router>
 						<div className="navbar">
 							<div className={classes.root}>
-								<AppBar position="static" style={{ backgroundColor: "black" }}>
+								<AppBar
+									position="static"
+									style={{ backgroundColor: "black" }}
+								>
 									<Toolbar>
 										<div>
 											<Button
@@ -96,16 +102,27 @@ class AppInner extends Component {
 												open={Boolean(anchorEl)}
 												onClose={handleClose}
 											>
-												<MenuItem onClick={handleClose}>Profile</MenuItem>
-												<MenuItem onClick={handleClose}>My account</MenuItem>
-												<MenuItem onClick={handleClose}>Logout</MenuItem>
+												<MenuItem onClick={handleClose}>
+													Profile
+												</MenuItem>
+												<MenuItem onClick={handleClose}>
+													My account
+												</MenuItem>
+												<MenuItem onClick={handleClose}>
+													Logout
+												</MenuItem>
 											</Menu>
 										</div>
-										<Typography variant="h6" className={classes.title}>
+										<Typography
+											variant="h6"
+											className={classes.title}
+										>
 											<h2>Space Mania</h2>
 										</Typography>
 										<Link to="/login">
-											<Button color="inherit">Login</Button>
+											<Button color="inherit">
+												Login
+											</Button>
 										</Link>
 									</Toolbar>
 								</AppBar>
@@ -119,7 +136,9 @@ class AppInner extends Component {
 							<Link to="/user">
 								<button>Profile</button>
 							</Link>
-							<button onClick={this.handleSignOut}>Sign Out</button>
+							<button onClick={this.handleSignOut}>
+								Sign Out
+							</button>
 						</div>
 						<h2>Space Mania</h2>
 						<h1>Hey {username || "Anonymous"}</h1>
@@ -131,18 +150,32 @@ class AppInner extends Component {
 								exact
 								path="/mode-selection"
 							/>
-							<Route component={ChallengesPage} exact path="/challenges" />
+							<Route
+								component={ChallengesPage}
+								exact
+								path="/challenges"
+							/>
 							<Route
 								path="/challenge/:challengeId"
 								render={(props) => (
-									<ChallengePage userId={this.state.userId} {...props} />
+									<ChallengePage
+										userId={this.state.userId}
+										{...props}
+									/>
 								)}
 							/>
-							<Route component={SinglePlayerPage} exact path="/single-player" />
+							<Route
+								component={SinglePlayerPage}
+								exact
+								path="/single-player"
+							/>
 							<Route
 								path="/gameplay/:gameId"
 								render={(props) => (
-									<GameplayPage userId={this.state.userId} {...props} />
+									<GameplayPage
+										userId={this.state.userId}
+										{...props}
+									/>
 								)}
 							/>
 							<Route
@@ -157,10 +190,17 @@ class AppInner extends Component {
 							<Route
 								path="/user"
 								render={(props) => (
-									<UserPage userId={this.state.userId} {...props} />
+									<UserPage
+										userId={this.state.userId}
+										{...props}
+									/>
 								)}
 							/>
-							<Route component={ModeSelectionPage} exact path="/" />
+							<Route
+								component={ModeSelectionPage}
+								exact
+								path="/"
+							/>
 						</Switch>
 					</Router>
 				</div>
@@ -171,11 +211,13 @@ class AppInner extends Component {
 	async componentDidMount() {
 		firebase.auth().onAuthStateChanged((user) => {
 			if (user && user.uid !== this.state.userId) {
-				axios.post("/getUserInfo", { userId: user.uid }).then((response) => {
-					this.setState({
-						username: response.data.displayName,
+				axios
+					.post("/getUserInfo", { userId: user.uid })
+					.then((response) => {
+						this.setState({
+							username: response.data.displayName,
+						});
 					});
-				});
 				this.setState({ userId: user.uid });
 			}
 		});
