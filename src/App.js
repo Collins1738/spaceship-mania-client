@@ -59,6 +59,8 @@ export const theme = createMuiTheme({
 			"&$focused": {
 				color: orange["900"],
 			},
+			borderColor: orange["900"],
+			color: orange["900"],
 		},
 		MuiOutlinedInput: {
 			root: {
@@ -140,9 +142,7 @@ class AppInner extends Component {
 									<Route
 										path="/mode-selection"
 										render={(props) => (
-											<ModeSelectionPage
-												{...props}
-											/>
+											<ModeSelectionPage {...props} />
 										)}
 									/>
 									<Route
@@ -177,7 +177,7 @@ class AppInner extends Component {
 											/>
 										)}
 									/>
-									
+
 									<Route
 										path="/challenge-creation"
 										render={(props) => (

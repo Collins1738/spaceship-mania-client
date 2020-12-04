@@ -49,7 +49,7 @@ const styles = (theme) => ({
 class ChallengesPage extends Component {
 	constructor(props) {
 		super(props);
-		this.state = { challenges: [] };
+		this.state = { challenges: [], loading: true };
 	}
 
 	render() {
@@ -69,6 +69,9 @@ class ChallengesPage extends Component {
 						Make A Challenge
 					</Button>
 				</div>
+				{this.state.loading && (
+					<Typography color="inherit">Loading...</Typography>
+				)}
 				<Grid container justify="center" spacing={2}>
 					{this.challengesList()}
 				</Grid>
@@ -98,7 +101,7 @@ class ChallengesPage extends Component {
 						};
 						return challenge;
 					});
-					this.setState({ challenges });
+					this.setState({ challenges, loading: false });
 				}
 			})
 			.catch((err) => {

@@ -1,13 +1,13 @@
 import React, { Component } from "react";
-import Button from "@material-ui/core/Button"; 
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
-import FormControl from '@material-ui/core/FormControl';
+import Button from "@material-ui/core/Button";
+import MenuItem from "@material-ui/core/MenuItem";
+import Select from "@material-ui/core/Select";
+import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import withStyles from "@material-ui/styles/withStyles";
 import axios from "axios";
 
-const styles =(theme)=>({
+const styles = (theme) => ({
 	a: {
 		background: "green",
 		color: "white",
@@ -17,61 +17,62 @@ const styles =(theme)=>({
 		margin: "40px",
 	},
 	input: {
-		color: "white"
+		color: "white",
 	},
 });
 
-
 class SinglePlayerPage extends Component {
-  constructor(props) {
-    super(props);
+	constructor(props) {
+		super(props);
 
 		this.state = {
 			size: 2,
 			options: [2, 3, 4, 5, 6, 7],
 			ships: 2,
+			loading: false,
 		};
 
 		this.handleClick = this.handleClick.bind(this);
 		this.handleChange = this.handleChange.bind(this);
 	}
-	    
+
 	render() {
-		const {size} = this.state;
-		const {classes} = this.props;
+		const { size, loading } = this.state;
+		const { classes } = this.props;
 		return (
 			<div>
-				<div>
-					<FormControl 
-						style={{ width: "200px" }}
-					>
-						<InputLabel
-						>
-							Select the board size
-						</InputLabel>
-						<Select
-							id="size"
-							value={size}
-							name="size"
-							onChange={this.handleChange}
-							inputProps={{className: classes.input}}	
-						>
-							{this.menuItems()}
-						</Select>
-					</FormControl>
-				</div>
+				{loading ? (
+					<div>Loading... </div>
+				) : (
+					<div>
+						<div>
+							<FormControl style={{ width: "200px" }}>
+								<InputLabel>Select the board size</InputLabel>
+								<Select
+									id="size"
+									value={size}
+									name="size"
+									onChange={this.handleChange}
+									inputProps={{ className: classes.input }}
+								>
+									{this.menuItems()}
+								</Select>
+							</FormControl>
+						</div>
 
-				<Button 
-					className={classes.a} 
-					onClick={this.handleClick}
-					size="small"
-				> 
-					START 
-				</Button> 
+						<Button
+							className={classes.a}
+							onClick={this.handleClick}
+							size="small"
+						>
+							START
+						</Button>
+					</div>
+				)}
 			</div>
-		); 
+		);
 	}
-	
+
 	menuItems = () => {
 		const { options } = this.state;
 		return options.map((option) => {
@@ -84,9 +85,9 @@ class SinglePlayerPage extends Component {
 	}
 
 	async handleClick() {
-		const {size} = this.state
+		const { size } = this.state;
 		let ships = 1;
-		switch(size){
+		switch (size) {
 			case 2:
 				ships = 2;
 				break;
@@ -108,8 +109,13 @@ class SinglePlayerPage extends Component {
 			default:
 				ships = 1;
 		}
-		
-		const res = await axios.post("/makeSinglePlayerGame", {userId: this.props.userId, numShips: ships, size: size});
+		this.setState({ loading: true });
+		const res = await axios.post("/makeSinglePlayerGame", {
+			userId: this.props.userId,
+			numShips: ships,
+			size: size,
+		});
+		this.setState({ loading: false });
 		this.props.history.push(`/gameplay/${res.data.gameId}`);
 	}
 }
