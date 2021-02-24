@@ -18,7 +18,6 @@ const styles = (theme) => ({
 class ModeSelectionPage extends Component {
 	constructor(props) {
 		super(props);
-
 		this.state = {};
 		this.enterChallengeMode = this.enterChallengeMode.bind(this);
 		this.enterSinglePlayerMode = this.enterSinglePlayerMode.bind(this);

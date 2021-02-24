@@ -29,6 +29,7 @@ import logo from "./assets/logo.jpg";
 
 axios.defaults.baseURL =
 	"https://us-central1-space-maniaa.cloudfunctions.net/api";
+// "http://localhost:5000/space-maniaa/us-central/api";
 
 export const theme = createMuiTheme({
 	palette: {
@@ -100,7 +101,8 @@ const useStyles = makeStyles(() => ({
 		flexGrow: 1,
 	},
 	body: {
-		marginTop: 150,
+		maxWidth: 800,
+		margin: "150px auto auto auto",
 	},
 }));
 
@@ -160,6 +162,7 @@ class AppInner extends Component {
 											<GameplayPage
 												userId={this.state.userId}
 												{...props}
+												key={props.match.params.gameId}
 											/>
 										)}
 									/>

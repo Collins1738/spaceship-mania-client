@@ -25,6 +25,39 @@ const styles = (theme) => ({
 		background: "green",
 		color: "white",
 	},
+	playAgain: {
+		background: "green",
+		color: "white",
+		margin: "10px",
+	},
+	blue: {
+		background: "blue",
+		color: "white",
+		minWidth: "50px",
+		minHeight: "30px",
+		padding: 0,
+		margin: "5px",
+	},
+	pink: {
+		background: "pink",
+		color: "black",
+		minWidth: "50px",
+		minHeight: "30px",
+		padding: 0,
+		margin: "5px",
+	},
+	remove: {
+		background: theme.color.grey,
+		minWidth: "50px",
+		minHeight: "30px",
+		padding: 0,
+		margin: "5px",
+	},
+	back: {
+		background: "red",
+		color: "white",
+		margin: "10px",
+	},
 	reset: {
 		background: "cyan",
 		color: "black",
@@ -38,6 +71,7 @@ const styles = (theme) => ({
 		"&:hover": {
 			backgroundColor: "pink",
 		},
+		marginTop: "30px",
 	},
 	unselectedButton: {
 		border: 5,
@@ -70,7 +104,7 @@ const styles = (theme) => ({
 	},
 });
 
-class GamplayPage extends Component {
+class GameplayPageInner extends Component {
 	constructor(props) {
 		super(props);
 
@@ -89,6 +123,8 @@ class GamplayPage extends Component {
 			pageLoading: true,
 			comment: "",
 			windowWidth: window.innerWidth,
+			markedBlue: [],
+			markedPink: [],
 		};
 
 		this.handleReset = this.handleReset.bind(this);
@@ -103,9 +139,12 @@ class GamplayPage extends Component {
 			gameWon,
 			gameOver,
 			numShips,
+			size,
 			positions,
 			loading,
 			pageLoading,
+			markedBlue,
+			markedPink,
 		} = this.state;
 		return (
 			<div>
@@ -143,7 +182,45 @@ class GamplayPage extends Component {
 						<Typography>
 							{!loading ? comment : "Loading..."}
 						</Typography>
+						{!gameOver && (
+							<Typography>Tries left: {triesLeft}</Typography>
+						)}
 						<div style={{ margin: "20px" }}>{this.board()}</div>
+						{gameOver && (
+							<div>
+								<Button
+									variant="contained"
+									className={classes.playAgain}
+									onClick={async () => {
+										this.setState({ loading: true });
+										const res = await axios.post(
+											"/makeSinglePlayerGame",
+											{
+												userId: this.props.userId,
+												numShips,
+												size,
+											}
+										);
+										this.props.history.push(
+											`/gameplay/${res.data.gameId}`
+										);
+									}}
+								>
+									Play Again
+								</Button>
+								<Button
+									variant="contained"
+									className={classes.back}
+									onClick={() => {
+										this.props.history.push(
+											"/mode-selection"
+										);
+									}}
+								>
+									Back to home
+								</Button>
+							</div>
+						)}
 						{!gameOver && (
 							<div>
 								<Typography>
@@ -164,13 +241,59 @@ class GamplayPage extends Component {
 										id="Reset"
 										onClick={this.handleReset}
 										className={classes.reset}
+										disabled={positions.length === 0}
 									>
-										Reset
+										Clear
 									</Button>
 								</div>
-
-								<Typography>Tries left: {triesLeft}</Typography>
-								<Typography>Score: {score}</Typography>
+								<div>
+									<Button
+										variant="contained"
+										className={classes.blue}
+										onClick={() => {
+											this.setState({
+												markedBlue: [
+													...new Set(
+														markedBlue.concat(
+															positions
+														)
+													),
+												],
+											});
+										}}
+									></Button>
+									<Button
+										variant="contained"
+										className={classes.pink}
+										onClick={() => {
+											this.setState({
+												markedPink: [
+													...new Set(
+														markedPink.concat(
+															positions
+														)
+													),
+												],
+											});
+										}}
+									></Button>
+									<Button
+										variant="contained"
+										className={classes.remove}
+										onClick={() => {
+											this.setState({
+												markedBlue: markedBlue.filter(
+													(id) =>
+														!positions.includes(id)
+												),
+												markedPink: markedPink.filter(
+													(id) =>
+														!positions.includes(id)
+												),
+											});
+										}}
+									></Button>
+								</div>
 								<Button
 									onClick={this.handleEnd}
 									className={classes.endGame}
@@ -206,8 +329,9 @@ class GamplayPage extends Component {
 			positions,
 			correctPositions,
 			windowWidth,
-			numShips,
 			gameOver,
+			markedBlue,
+			markedPink,
 		} = this.state;
 		const { classes } = this.props;
 		var row = [];
@@ -220,25 +344,54 @@ class GamplayPage extends Component {
 			var id = String(rowNumber) + String(i);
 			row.push(
 				<Grid item key={id}>
-					<Button
-						id={id}
-						className={
-							correctPositions.includes(id)
-								? classes.correctButton
-								: positions.includes(id)
-								? classes.selectedButton
-								: classes.unselectedButton
-						}
-						onClick={this.handleClick}
-						size="small"
-						style={{ height: width, width: width, minWidth: 1 }}
-						disabled={
-							gameOver ||
-							(!positions.includes(id) &&
-								!correctPositions.includes(id) &&
-								positions.length === numShips)
-						}
-					></Button>
+					<div style={{ position: "relative" }}>
+						<Button
+							id={id}
+							className={
+								correctPositions.includes(id)
+									? classes.correctButton
+									: positions.includes(id)
+									? classes.selectedButton
+									: classes.unselectedButton
+							}
+							onClick={this.handleClick}
+							size="small"
+							style={{ height: width, width: width, minWidth: 1 }}
+							disabled={gameOver}
+						></Button>
+						{markedBlue.includes(id) && (
+							<Button
+								style={{
+									borderRadius: "full",
+									minWidth: "10px",
+									height: "10px",
+									padding: 0,
+									position: "absolute",
+									left: "4px",
+									top: "4px",
+									backgroundColor: "blue",
+								}}
+								id="blue-mark"
+								variant="contained"
+							></Button>
+						)}
+						{markedPink.includes(id) && (
+							<Button
+								style={{
+									borderRadius: "full",
+									minWidth: "10px",
+									height: "10px",
+									padding: 0,
+									position: "absolute",
+									right: "4px",
+									top: "4px",
+									backgroundColor: "pink",
+								}}
+								id="pink-mark"
+								variant="contained"
+							></Button>
+						)}
+					</div>
 				</Grid>
 			);
 			i += 1;
@@ -270,7 +423,7 @@ class GamplayPage extends Component {
 			.then((response) => {
 				if (response.status === 200) {
 					const { numShips, size, triesLeft, userId } = response.data;
-					if (userId !== this.state.userId && false) {
+					if (userId !== this.state.userId) {
 						alert("Game can only be played by correct user");
 						this.props.history.push("/mode-selection");
 					} else {
@@ -286,8 +439,12 @@ class GamplayPage extends Component {
 				}
 			})
 			.catch((error) => {
-				alert("Something went wrong");
-				console.log(error.message);
+				if (error.response.status === 400) {
+					alert("This game no longer exists");
+					this.props.history.push("/mode-selection");
+				} else {
+					alert("Something went wrong");
+				}
 			});
 	}
 
@@ -300,15 +457,12 @@ class GamplayPage extends Component {
 
 	handleClick = (event) => {
 		const { id } = event.currentTarget;
-		const { positions, numShips } = this.state;
+		const { positions } = this.state;
 		var newPositions = positions;
 		if (positions.includes(id)) {
 			newPositions.splice(positions.indexOf(id), 1);
 			this.setState({ positions: newPositions });
 		} else {
-			if (positions.length === numShips) {
-				return;
-			}
 			newPositions.push(id);
 			this.setState({ positions: newPositions });
 		}
@@ -387,5 +541,7 @@ class GamplayPage extends Component {
 		this.setState({ positions: [] });
 	}
 }
-
-export default withStyles(styles)(GamplayPage);
+function GameplayPage(props) {
+	return <>{props.userId && <GameplayPageInner {...props} />}</>;
+}
+export default withStyles(styles)(GameplayPage);

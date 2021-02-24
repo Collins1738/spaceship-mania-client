@@ -35,7 +35,7 @@ const styles = (theme) => ({
 	},
 });
 
-class UserPage extends Component {
+class UserPageInner extends Component {
 	constructor(props) {
 		super(props);
 
@@ -44,6 +44,7 @@ class UserPage extends Component {
 			challengesMade: [],
 			challengesPlayed: [],
 			userId: this.props.userId,
+			loading: true,
 		};
 
 		this.handleChange = this.handleChange.bind(this);
@@ -55,59 +56,71 @@ class UserPage extends Component {
 			displayName,
 			numSinglePlayerGamesPlayed,
 			highscoreSinglePlayer,
+			loading,
 		} = this.state;
 		const { classes } = this.props;
 		return (
 			<div>
-				<div style={{ padding: "20px" }}>
-					<TextField
-						id="displayName"
-						name="displayName"
-						label="Display Name"
-						value={displayName}
-						onChange={this.handleChange}
-						inputProps={{ className: classes.input }}
-						variant="outlined"
-					/>
-					<span style={{ padding: "20px" }}>
-						<Button
-							id="submit"
-							onClick={this.handleSubmit}
-							color="primary"
-							variant="contained"
-							style={{ width: "100px", height: "60px" }}
+				{loading ? (
+					<div>Loading...</div>
+				) : (
+					<div style={{}}>
+						<div
+							style={{
+								padding: "20px",
+								// alignItems: "flex-start",
+								// display: "flex",
+							}}
 						>
-							Change
-						</Button>
-					</span>
-				</div>
-				<div>
-					<div className={classes.space}>
-						<Typography>
-							Single Player Highscore: {highscoreSinglePlayer}
-						</Typography>
+							<TextField
+								id="displayName"
+								name="displayName"
+								label="Display Name"
+								value={displayName}
+								onChange={this.handleChange}
+								inputProps={{ className: classes.input }}
+								variant="outlined"
+							/>
+							{/* <span style={{ padding: "20px" }}> */}
+							<Button
+								id="submit"
+								onClick={this.handleSubmit}
+								color="primary"
+								variant="contained"
+								style={{ width: "100px", height: "60px" }}
+							>
+								Change
+							</Button>
+							{/* </span> */}
+						</div>
+						<div className={classes.space}>
+							<Typography>
+								Single Player Highscore: {highscoreSinglePlayer}
+							</Typography>
+						</div>
+						<div className={classes.space}>
+							<Typography>
+								Number of Single Player Games Played:{" "}
+								{numSinglePlayerGamesPlayed}
+							</Typography>
+						</div>
+						<div className={classes.space}>
+							<Typography>Challenges Made: </Typography>
+							{this.challengesMadeList()}
+						</div>
+						<div className={classes.space}>
+							<Typography>Challenges Played: </Typography>
+							{this.challengesPlayedList()}
+						</div>
 					</div>
-					<div className={classes.space}>
-						<Typography>
-							Number of Single Player Games Played:{" "}
-							{numSinglePlayerGamesPlayed}
-						</Typography>
-					</div>
-					<div className={classes.space}>
-						<Typography>Challenges Made: </Typography>
-						{this.challengesMadeList()}
-					</div>
-					<div className={classes.space}>
-						<Typography>Challenges Played: </Typography>
-						{this.challengesPlayedList()}
-					</div>
-				</div>
+				)}
 			</div>
 		);
 	}
 
-	componentDidMount() {
-		axios
+	async componentDidMount() {
+		this.setState({ loading: true });
+		await axios
 			.post("/getUserInfo", { userId: this.props.userId })
 			.then((response) => {
 				const {
@@ -124,7 +137,11 @@ class UserPage extends Component {
 					challengesMade,
 					challengesPlayed,
 				});
+			})
+			.catch((err) => {
+				console.error(err.message);
 			});
+		this.setState({ loading: false });
 	}
 
 	handleChange(event) {
@@ -173,7 +190,6 @@ class UserPage extends Component {
 											color="inherit"
 											style={{
 												width: "100%",
-												height: "25px",
 											}}
 										>
 											Load
@@ -216,7 +232,6 @@ class UserPage extends Component {
 											color="inherit"
 											style={{
 												width: "100%",
-												height: "25px",
 											}}
 											className={classes.loadButton}
 										>
@@ -233,4 +248,8 @@ class UserPage extends Component {
 	};
 }
 
+function UserPage(props) {
+	const { userId } = props;
+	return <div>{userId && <UserPageInner {...props} />} </div>;
+}
 export default withStyles(styles)(UserPage);
