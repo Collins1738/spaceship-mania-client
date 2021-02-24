@@ -190,7 +190,6 @@ class UserPageInner extends Component {
 											color="inherit"
 											style={{
 												width: "100%",
-												// height: "25px",
 											}}
 										>
 											Load
@@ -233,7 +232,6 @@ class UserPageInner extends Component {
 											color="inherit"
 											style={{
 												width: "100%",
-												// height: "25px",
 											}}
 											className={classes.loadButton}
 										>

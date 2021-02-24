@@ -146,7 +146,6 @@ class GameplayPageInner extends Component {
 			markedBlue,
 			markedPink,
 		} = this.state;
-		console.log("ran");
 		return (
 			<div>
 				{pageLoading ? (
