@@ -25,12 +25,11 @@ import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import IconButton from "@material-ui/core/IconButton";
 import AccountCircle from "@material-ui/icons/AccountCircle";
-import Grid from "@material-ui/core/Button";
-import Menuu from "@material-ui/core/Menu";
 import logo from "./assets/logo.jpg";
 
 axios.defaults.baseURL =
 	"https://us-central1-space-maniaa.cloudfunctions.net/api";
+// "http://localhost:5000/space-maniaa/us-central/api";
 
 export const theme = createMuiTheme({
 	palette: {
@@ -102,7 +101,8 @@ const useStyles = makeStyles(() => ({
 		flexGrow: 1,
 	},
 	body: {
-		marginTop: 150,
+		maxWidth: 800,
+		margin: "150px auto auto auto",
 	},
 }));
 
@@ -162,6 +162,7 @@ class AppInner extends Component {
 											<GameplayPage
 												userId={this.state.userId}
 												{...props}
+												key={props.match.params.gameId}
 											/>
 										)}
 									/>
